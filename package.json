@@ -1,0 +1,45 @@
+{
+  "name": "@prereason/mcp",
+  "version": "0.1.5",
+  "type": "module",
+  "description": "MCP server for pre-analyzed Bitcoin and macro financial intelligence. Trend signals, regime classification, confidence scores, and 17 context templates.",
+  "bin": {
+    "prereason-mcp": "./bin/cli.js"
+  },
+  "files": [
+    "bin",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.26.0"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "claude",
+    "bitcoin",
+    "macro",
+    "prereason",
+    "ai",
+    "llm",
+    "finance",
+    "crypto",
+    "financial-data",
+    "liquidity",
+    "ai-agent",
+    "trading",
+    "market-data",
+    "context-protocol"
+  ],
+  "license": "MIT",
+  "homepage": "https://www.prereason.com/docs#mcp",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/prereason/mcp"
+  }
+}
