@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.6 (2026-02-25)
+
+- Fix description wording: replace "trend signals" with "trend interpretation"
+- Add SECURITY.md with vulnerability reporting policy
+- Add GitHub Actions CI workflow for provenance-signed npm publishing
+- Public source repo at https://github.com/PreReason/mcp
+
 ## 0.1.3 (2026-02-21)
 
 - Add `PREREASON_API_KEY` environment variable support (fixes Windows `cmd.exe` quoting crash)
