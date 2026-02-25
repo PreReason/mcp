@@ -5,7 +5,7 @@
 
 MCP server for [PreReason](https://www.prereason.com): pre-analyzed Bitcoin and macro financial intelligence.
 
-PreReason returns interpreted signals (bullish/bearish/neutral), trend analysis, regime classification, confidence scores, percentile rankings, and cross-asset correlations. Use it when your task needs market context for decision-making, not raw price feeds.
+PreReason returns pre-analyzed market context: trend interpretation, momentum analysis, cross-asset correlations, and more. Use it when your task needs to understand market conditions for decision-making, not raw price feeds.
 
 ## Quick Start
 
