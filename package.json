@@ -1,6 +1,6 @@
 {
   "name": "@prereason/mcp",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "type": "module",
   "description": "MCP server for pre-analyzed Bitcoin and macro financial intelligence. 17 context templates with trend interpretation, momentum analysis, and cross-asset correlations.",
   "bin": {
@@ -13,7 +13,7 @@
     "CHANGELOG.md"
   ],
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.26.0"
+    "@modelcontextprotocol/sdk": "1.27.1"
   },
   "engines": {
     "node": ">=18"

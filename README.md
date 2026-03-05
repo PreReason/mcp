@@ -71,7 +71,7 @@ Restart your MCP client after editing the config. PreReason should appear with 5
 | Tool | Auth | Description |
 |------|------|-------------|
 | `list_templates` | Open | List all 17 context templates with tier requirements |
-| `list_metrics` | Open | List all 26 available metrics (filterable by category) |
+| `list_metrics` | Open | List all 30 available metrics (filterable by category) |
 | `get_health` | Open | API health check, version, account tier |
 | `get_context` | Required | Fetch a context template (markdown or JSON) |
 | `get_metric` | Required | Fetch a single metric with trend/signal/percentile |
@@ -91,7 +91,7 @@ Restart your MCP client after editing the config. PreReason should appear with 5
 ### Basic - $19.99/mo (5 templates)
 | Template | Description |
 |----------|-------------|
-| `btc.momentum` | Extended momentum with 90d trends and percentiles |
+| `btc.momentum` | 200D MA support/resistance with 7d/30d/90d momentum and YTD percentiles |
 | `macro.liquidity` | Liquidity indicators with momentum analysis |
 | `btc.on-chain` | Hash rate, difficulty, fees, mempool health |
 | `cross.breadth` | Cross-asset breadth with SPY, DXY, VIX |
@@ -102,7 +102,7 @@ Restart your MCP client after editing the config. PreReason should appear with 5
 |----------|-------------|
 | `btc.full` | Complete market intelligence with all metrics and analysis |
 | `btc.factors` | Multi-factor attribution for BTC price movements |
-| `cross.regime` | Market regime classification (risk-on/risk-off/transition) |
+| `cross.regime` | Regime classification (risk-on/risk-off/transition) with USDT.D risk sentiment |
 | `fx.liquidity` | FX environment with DXY, treasury, and global liquidity |
 | `btc.energy` | Production cost model with gas input pressure |
 | `btc.treasury` | Corporate Bitcoin treasury intelligence from SEC filings |

@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.7 (2026-03-04)
+
+- Pin `@modelcontextprotocol/sdk` to exact `1.27.1` (fixes transitive CVEs in hono and qs)
+- Update metric count from 26 to 30 (added 200D MA, distance from 200D MA, USDT market cap, USDT dominance)
+- Update `btc.momentum` description to reflect 200D MA support/resistance
+- Update `cross.regime` description to reflect USDT.D risk sentiment
+
 ## 0.1.6 (2026-02-25)
 
 - Fix description wording: replace "trend signals" with "trend interpretation"
