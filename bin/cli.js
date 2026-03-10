@@ -17,17 +17,17 @@
  *   PREREASON_URL       Override the default endpoint URL
  */
 
-import { createRequire } from 'node:module';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
 
+// Keep in sync with package.json on each release
+const PKG_NAME = '@prereason/mcp';
+const PKG_VERSION = '0.1.9';
 const DEFAULT_URL = 'https://api.prereason.com/api/mcp';
 
 // --- Help / Version ---
 if (process.argv.includes('--help') || process.argv.includes('-h')) {
-  const require = createRequire(import.meta.url);
-  const pkg = require('../package.json');
-  process.stderr.write(`${pkg.name} v${pkg.version}\n\n`);
+  process.stderr.write(`${PKG_NAME} v${PKG_VERSION}\n\n`);
   process.stderr.write('Usage:\n');
   process.stderr.write('  npx @prereason/mcp\n');
   process.stderr.write('  npx @prereason/mcp [--header Key:Value]...\n\n');
@@ -43,9 +43,7 @@ if (process.argv.includes('--help') || process.argv.includes('-h')) {
 }
 
 if (process.argv.includes('--version') || process.argv.includes('-v')) {
-  const require = createRequire(import.meta.url);
-  const pkg = require('../package.json');
-  process.stderr.write(`${pkg.version}\n`);
+  process.stderr.write(`${PKG_VERSION}\n`);
   process.exit(0);
 }
 

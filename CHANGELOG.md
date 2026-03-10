@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.1.9 (2026-03-10)
+
+- Expand `socket.yml` to suppress all known-safe transitive dependency alerts from `@modelcontextprotocol/sdk`
+- Covers eval (ajv), shell (cross-spawn), filesystem (express/send), debug, dynamic require, unmaintained micro-packages, and more
+
+## 0.1.8 (2026-03-05)
+
+- Remove `createRequire` / dynamic `require('../package.json')` — hardcode version constants
+- Eliminates Socket.dev "Dynamic require" and "Filesystem access" findings from our code
+- Add `socket.yml` for GitHub PR alert suppression of expected behaviors (network access, env vars)
+
 ## 0.1.7 (2026-03-04)
 
 - Pin `@modelcontextprotocol/sdk` to exact `1.27.1` (fixes transitive CVEs in hono and qs)

@@ -1,0 +1,16 @@
+version: 2
+issueRules:
+  # === Expected for a stdio-to-HTTP MCP bridge ===
+  networkAccess: false        # Core function: bridges stdio to remote HTTP endpoint
+  envVars: false              # Documented config: PREREASON_API_KEY, PREREASON_URL
+  # === Transitive deps from @modelcontextprotocol/sdk ===
+  usesEval: false             # ajv JSON schema compilation uses new Function() — standard practice
+  shellAccess: false          # cross-spawn — SDK dev tooling, not invoked at runtime by our code
+  filesystemAccess: false     # express/send/serve-static — SDK server internals, unused by our bridge
+  debugAccess: false          # debug package — standard Node.js logging, no security concern
+  dynamicRequire: false       # ajv/require-from-string — JSON schema compilation internals
+  minifiedCode: false         # hono ships minified — upstream build artifact
+  highEntropyStrings: false   # Compiled/hashed constants in upstream deps
+  urlStrings: false           # Expected: HTTP URLs in a network protocol library
+  unmaintained: false         # Stable micro-packages (wrappy, once, inherits, etc.) — intentionally finished
+  newAuthor: false            # SDK ecosystem version bumps with maintainer additions
