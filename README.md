@@ -71,7 +71,7 @@ Restart your MCP client after editing the config. PreReason should appear with 5
 | Tool | Auth | Description |
 |------|------|-------------|
 | `list_templates` | Open | List all 17 context templates with tier requirements |
-| `list_metrics` | Open | List all 30 available metrics (filterable by category) |
+| `list_metrics` | Open | List all 38 available metrics: 30 API + 8 mining/energy (filterable by category) |
 | `get_health` | Open | API health check, version, account tier |
 | `get_context` | Required | Fetch a context template (markdown or JSON) |
 | `get_metric` | Required | Fetch a single metric with trend/signal/percentile |

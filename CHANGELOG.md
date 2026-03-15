@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.10 (2026-03-15)
+
+- Enable SLSA provenance attestation via GitHub Actions publish workflow
+- Fix workflow placement: move from `packages/mcp/.github/` to repo root `.github/workflows/`
+- Switch publish trigger to `workflow_dispatch` for manual control
+
 ## 0.1.9 (2026-03-10)
 
 - Expand `socket.yml` to suppress all known-safe transitive dependency alerts from `@modelcontextprotocol/sdk`
