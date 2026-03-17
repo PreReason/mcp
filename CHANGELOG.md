@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.1.12 (2026-03-17)
+
+- Switch publish workflow to OIDC trusted publisher (no NPM_TOKEN needed)
+- Trigger on tag push (`v*`) instead of GitHub releases
+- Fix repository URL to canonical npm format
+
+## 0.1.11 (2026-03-17)
+
+- Vocabulary alignment: "templates" → "briefings" across README, CHANGELOG, and tool references
+- Update published npm description to reference "briefings" instead of "templates"
+
 ## 0.1.10 (2026-03-15)
 
 - Enable SLSA provenance attestation via GitHub Actions publish workflow
@@ -46,7 +57,7 @@
 ## 0.1.1 (2026-02-21)
 
 - Add MIT LICENSE file
-- Enhance README with full template list, troubleshooting, and example prompts
+- Enhance README with full briefing list, troubleshooting, and example prompts
 - Add CHANGELOG
 
 ## 0.1.0 (2026-02-20)
@@ -56,4 +67,4 @@
 - Default URL: `https://api.prereason.com/api/mcp`
 - `--header Key:Value` flag for API key authentication
 - `--help` and `--version` flags
-- 5 MCP tools: get_context, get_metric, list_templates, list_metrics, get_health
+- 5 MCP tools: get_context, get_metric, list_briefings, list_metrics, get_health

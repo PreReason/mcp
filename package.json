@@ -1,8 +1,8 @@
 {
   "name": "@prereason/mcp",
-  "version": "0.1.10",
+  "version": "0.1.12",
   "type": "module",
-  "description": "MCP server for pre-analyzed Bitcoin and macro financial intelligence. 17 context templates with trend interpretation, momentum analysis, and cross-asset correlations.",
+  "description": "MCP server for PreReason — the Context API for financial agents. 17 pre-reasoned market briefings with trend signals, regime classification, confidence scores, and cross-asset correlations.",
   "bin": {
     "prereason-mcp": "./bin/cli.js"
   },
@@ -29,17 +29,17 @@
     "llm",
     "finance",
     "crypto",
-    "financial-data",
+    "context-api",
+    "market-briefing",
     "liquidity",
     "ai-agent",
-    "trading",
-    "market-data",
+    "pre-reasoned",
     "context-protocol"
   ],
   "license": "MIT",
   "homepage": "https://www.prereason.com/docs#mcp",
   "repository": {
     "type": "git",
-    "url": "https://github.com/PreReason/mcp"
+    "url": "git+https://github.com/PreReason/mcp.git"
   }
 }

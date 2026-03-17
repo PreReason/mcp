@@ -1,12 +1,13 @@
-name: Publish to npm
+name: Publish MCP Package
 
 on:
-  release:
-    types: [created]
-  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
 
 jobs:
   publish:
+    name: Publish to npm with provenance
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -16,11 +17,8 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: "22"
-          registry-url: "https://registry.npmjs.org"
+          node-version: 22
+          registry-url: https://registry.npmjs.org
 
-      - run: npm install -g npm@latest
-
-      - run: npm install --ignore-scripts
-
-      - run: npm publish --provenance --access public
+      - name: Publish with provenance (OIDC trusted publisher)
+        run: npm publish --provenance --access public

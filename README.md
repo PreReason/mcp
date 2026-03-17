@@ -3,9 +3,9 @@
 [![npm version](https://img.shields.io/npm/v/@prereason/mcp.svg)](https://www.npmjs.com/package/@prereason/mcp)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-MCP server for [PreReason](https://www.prereason.com): pre-analyzed Bitcoin and macro financial intelligence.
+MCP server for [PreReason](https://www.prereason.com) — the Context API for financial agents.
 
-PreReason returns pre-analyzed market context: trend interpretation, momentum analysis, cross-asset correlations, and more. Use it when your task needs to understand market conditions for decision-making, not raw price feeds.
+PreReason returns pre-reasoned market briefings: trend signals, regime classification, confidence scores, cross-asset correlations, and causal narratives. Use it when your agent needs to reason about market conditions, not parse raw price feeds.
 
 ## Quick Start
 
@@ -70,16 +70,16 @@ Restart your MCP client after editing the config. PreReason should appear with 5
 
 | Tool | Auth | Description |
 |------|------|-------------|
-| `list_templates` | Open | List all 17 context templates with tier requirements |
+| `list_briefings` | Open | List all 17 pre-reasoned market briefings with tier requirements |
 | `list_metrics` | Open | List all 38 available metrics: 30 API + 8 mining/energy (filterable by category) |
 | `get_health` | Open | API health check, version, account tier |
-| `get_context` | Required | Fetch a context template (markdown or JSON) |
+| `get_context` | Required | Fetch a pre-reasoned market briefing (markdown or JSON) |
 | `get_metric` | Required | Fetch a single metric with trend/signal/percentile |
 
-## 17 Context Templates
+## 17 Market Briefings
 
-### Free (6 templates)
-| Template | Description |
+### Free (6 briefings)
+| Briefing | Description |
 |----------|-------------|
 | `btc.quick-check` | Minimal fast context: BTC + Net Liquidity + correlation |
 | `btc.context` | BTC + liquidity + hash ribbon + difficulty + momentum |
@@ -88,8 +88,8 @@ Restart your MCP client after editing the config. PreReason should appear with 5
 | `btc.pulse` | Volume, fees, mempool analysis |
 | `btc.grid-stress` | Epoch pace and difficulty adjustment forecast |
 
-### Basic - $19.99/mo (5 templates)
-| Template | Description |
+### Basic - $19.99/mo (5 briefings)
+| Briefing | Description |
 |----------|-------------|
 | `btc.momentum` | 200D MA support/resistance with 7d/30d/90d momentum and YTD percentiles |
 | `macro.liquidity` | Liquidity indicators with momentum analysis |
@@ -97,8 +97,8 @@ Restart your MCP client after editing the config. PreReason should appear with 5
 | `cross.breadth` | Cross-asset breadth with SPY, DXY, VIX |
 | `btc.miner-survival` | Hashprice thermometer with miner stress scoring |
 
-### Pro - $49.99/mo (6 templates)
-| Template | Description |
+### Pro - $49.99/mo (6 briefings)
+| Briefing | Description |
 |----------|-------------|
 | `btc.full` | Complete market intelligence with all metrics and analysis |
 | `btc.factors` | Multi-factor attribution for BTC price movements |
@@ -113,10 +113,10 @@ Once connected, try prompts like:
 
 - "What's the current BTC regime?"
 - "Show me the macro snapshot"
-- "What does the full context template say about market conditions?"
+- "What does the full context briefing say about market conditions?"
 - "Get the bitcoin price metric with trend analysis"
 - "What's the hash ribbon signal right now?"
-- "List available templates"
+- "List available briefings"
 
 ## Troubleshooting
 
@@ -153,7 +153,7 @@ If you still see this error, ensure you're using the `env` block (not `--header`
 ```
 
 ### Auth errors on get_context / get_metric
-- `list_templates`, `list_metrics`, and `get_health` work without a key
+- `list_briefings`, `list_metrics`, and `get_health` work without a key
 - `get_context` and `get_metric` require a valid API key
 - Get a free key at [prereason.com/signup](https://www.prereason.com/signup)
 
