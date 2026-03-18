@@ -7,6 +7,8 @@ MCP server for [PreReason](https://www.prereason.com) — the Context API for fi
 
 PreReason returns pre-reasoned market briefings: trend signals, regime classification, confidence scores, cross-asset correlations, and causal narratives. Use it when your agent needs to reason about market conditions, not parse raw price feeds.
 
+[![prereason-mcp MCP server](https://glama.ai/mcp/servers/PreReason/mcp/badges/card.svg)](https://glama.ai/mcp/servers/PreReason/mcp)
+
 ## Quick Start
 
 ### Option 1: Direct HTTP (Claude Code, Cursor, Windsurf, etc.)
