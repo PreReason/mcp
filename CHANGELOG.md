@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.0 (2026-03-21)
+
+- Add Glama deployment support (Dockerfile build, inspection, release)
+- Add build script for container image builds
+- Add 6 MCP prompt templates (daily_market_briefing, risk_check, mining_profitability, macro_regime_check, correlation_scanner, weekly_recap)
+- Add 2 MCP resource catalogs (briefing_catalog, metric_catalog)
+
 ## 0.1.12 (2026-03-17)
 
 - Switch publish workflow to OIDC trusted publisher (no NPM_TOKEN needed)
