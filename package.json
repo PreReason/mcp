@@ -7,6 +7,9 @@
   "bin": {
     "prereason-mcp": "./bin/cli.js"
   },
+  "scripts": {
+    "build": "echo 'Build complete'"
+  },
   "files": [
     "bin",
     "README.md",

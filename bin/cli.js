@@ -22,7 +22,7 @@ import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/
 
 // Keep in sync with package.json on each release
 const PKG_NAME = '@prereason/mcp';
-const PKG_VERSION = '0.1.12';
+const PKG_VERSION = '0.1.13';
 const DEFAULT_URL = 'https://api.prereason.com/api/mcp';
 
 // --- Help / Version ---
