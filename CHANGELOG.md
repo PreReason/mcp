@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.1 (2026-03-30)
+
+- Add .mcp.json for Open Plugins / cursor.directory discovery
+- Include .mcp.json in npm package files
+
 ## 0.2.0 (2026-03-21)
 
 - Add Glama deployment support (Dockerfile build, inspection, release)

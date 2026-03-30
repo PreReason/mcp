@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "prereason": {
+      "type": "http",
+      "url": "https://api.prereason.com/api/mcp"
+    }
+  }
+}
