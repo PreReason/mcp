@@ -1,6 +1,6 @@
 {
   "name": "@prereason/mcp",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "mcpName": "com.prereason/mcp",
   "type": "module",
   "description": "MCP server for PreReason — the Context API for financial agents. 17 pre-reasoned market briefings with trend signals, regime classification, confidence scores, and cross-asset correlations.",
@@ -41,10 +41,21 @@
     "pre-reasoned",
     "context-protocol"
   ],
+  "author": {
+    "name": "PreReason",
+    "url": "https://www.prereason.com"
+  },
   "license": "MIT",
   "homepage": "https://www.prereason.com/docs#mcp",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/PreReason/mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/PreReason/mcp/issues"
+  },
+  "funding": {
+    "type": "individual",
+    "url": "https://www.prereason.com/signup"
   }
 }

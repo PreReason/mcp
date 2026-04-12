@@ -1,14 +1,18 @@
+<div align="center">
+
 # @prereason/mcp
 
 [![npm version](https://img.shields.io/npm/v/@prereason/mcp.svg)](https://www.npmjs.com/package/@prereason/mcp)
+[![npm downloads](https://img.shields.io/npm/dm/@prereason/mcp.svg)](https://www.npmjs.com/package/@prereason/mcp)
+[![node version](https://img.shields.io/node/v/@prereason/mcp.svg)](https://nodejs.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![PreReason/mcp MCP server](https://glama.ai/mcp/servers/PreReason/mcp/badges/score.svg)](https://glama.ai/mcp/servers/PreReason/mcp)
 
-MCP server for [PreReason](https://www.prereason.com) — the Context API for financial agents.
+**MCP server for [PreReason](https://www.prereason.com) -- the Context API for financial agents.**
 
-PreReason returns pre-reasoned market briefings: trend signals, regime classification, confidence scores, cross-asset correlations, and causal narratives. Use it when your agent needs to reason about market conditions, not parse raw price feeds.
+Pre-reasoned market briefings: trend signals, regime classification, confidence scores,<br>
+cross-asset correlations, and causal narratives for AI agents.
 
-[![prereason-mcp MCP server](https://glama.ai/mcp/servers/PreReason/mcp/badges/card.svg)](https://glama.ai/mcp/servers/PreReason/mcp)
+</div>
 
 ## Quick Start
 
@@ -74,7 +78,7 @@ Restart your MCP client after editing the config. PreReason should appear with 5
 | Tool | Auth | Description |
 |------|------|-------------|
 | `list_briefings` | Open | List all 17 pre-reasoned market briefings with tier requirements |
-| `list_metrics` | Open | List all 38 available metrics: 30 API + 8 mining/energy (filterable by category) |
+| `list_metrics` | Open | List all 30 available metrics across bitcoin, macro, and calculated categories |
 | `get_health` | Open | API health check, version, account tier |
 | `get_context` | Required | Fetch a pre-reasoned market briefing (markdown or JSON) |
 | `get_metric` | Required | Fetch a single metric with trend/signal/percentile |
@@ -187,6 +191,10 @@ npx @prereason/mcp --help
 - [API Discovery](https://www.prereason.com/.well-known/mcp/server.json)
 - [Terms of Service](https://www.prereason.com/terms)
 - [Privacy Policy](https://www.prereason.com/privacy)
+
+## Privacy Policy
+
+See [prereason.com/privacy](https://www.prereason.com/privacy) for data handling practices.
 
 ## License
 

@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.3.0 (2026-04-12)
+
+### Added
+- OAuth 2.1 support for automatic API key provisioning on MCP connection
+- Server branding metadata (title, description, icons) for client connection cards
+- Centered README hero layout with improved visual hierarchy
+- Privacy Policy section in README
+- npm downloads and Node.js version badges
+
+### Security
+- Harden OAuth proxy endpoints with input validation, rate limiting, and timeout handling
+- Sanitize upstream error responses on token exchange
+
+### Fixed
+- HEAD /api/mcp returning 405 instead of 200
+- Metric count in README (38 -> 30)
+- cli.js version mismatch with package.json
+
 ## 0.2.1 (2026-03-30)
 
 - Add .mcp.json for Open Plugins / cursor.directory discovery
