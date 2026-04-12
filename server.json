@@ -1,0 +1,36 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.PreReason/mcp",
+  "description": "Pre-reasoned Bitcoin and macro market briefings for AI agents. 17 briefings, 30 metrics.",
+  "repository": {
+    "url": "https://github.com/PreReason/mcp",
+    "source": "github"
+  },
+  "version": "0.3.1",
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "@prereason/mcp",
+      "version": "0.3.1",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "description": "PreReason API key (starts with pr_live_). Get one free at prereason.com/signup. Optional if using OAuth.",
+          "isRequired": false,
+          "format": "string",
+          "isSecret": true,
+          "name": "PREREASON_API_KEY"
+        }
+      ]
+    }
+  ],
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://api.prereason.com/api/mcp",
+      "authorizationType": "oauth2"
+    }
+  ]
+}
