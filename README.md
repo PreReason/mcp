@@ -6,11 +6,12 @@
 [![npm downloads](https://img.shields.io/npm/dm/@prereason/mcp.svg)](https://www.npmjs.com/package/@prereason/mcp)
 [![node version](https://img.shields.io/node/v/@prereason/mcp.svg)](https://nodejs.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![Glama Score](https://glama.ai/mcp/servers/PreReason/mcp/badges/score.svg)](https://glama.ai/mcp/servers/PreReason/mcp)
 
-**MCP server for [PreReason](https://www.prereason.com) -- the Context API for financial agents.**
+**MCP server for [PreReason](https://www.prereason.com) - the Context API for financial agents.**
 
-Pre-reasoned market briefings: trend signals, regime classification, confidence scores,<br>
-cross-asset correlations, and causal narratives for AI agents.
+Give your agent market context, not raw price feeds. 17 briefings covering BTC, macro,<br>
+cross-asset regimes, and liquidity - each with trend signals, confidence scores, and causal narratives.
 
 </div>
 
