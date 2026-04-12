@@ -17,16 +17,33 @@ cross-asset regimes, and liquidity - each with trend signals, confidence scores,
 
 ## Quick Start
 
-### Option 1: Direct HTTP (Claude Code, Cursor, Windsurf, etc.)
+### Option 1: One-Click Connect (Claude.ai, ChatGPT, Cursor, Codex, Windsurf, VS Code Copilot)
 
-Clients that support remote MCP servers can connect directly with no bridge package needed.
+Clients that support MCP OAuth can connect with no API key setup required. Add the server URL and the client handles the rest - you'll be prompted to sign in or create a free account, and your API key is provisioned automatically.
+
+```json
+{
+  "mcpServers": {
+    "prereason": {
+      "type": "http",
+      "url": "https://api.prereason.com/api/mcp"
+    }
+  }
+}
+```
+
+No `Authorization` header needed - OAuth handles it.
+
+### Option 2: Direct HTTP with API Key (Claude Code, scripts, cron jobs)
+
+For CLI tools or when you want to use an existing API key:
 
 ```bash
 # Claude Code (CLI one-liner)
 claude mcp add prereason --transport http https://api.prereason.com/api/mcp
 ```
 
-Or add to `.mcp.json` / your client's MCP config:
+Or with an explicit key in your MCP config:
 
 ```json
 {
@@ -42,7 +59,7 @@ Or add to `.mcp.json` / your client's MCP config:
 }
 ```
 
-### Option 2: stdio bridge (Claude Desktop and other stdio-only clients)
+### Option 3: stdio bridge (Claude Desktop and other stdio-only clients)
 
 **Requires [Node.js 18+](https://nodejs.org)**
 
