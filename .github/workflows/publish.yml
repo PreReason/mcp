@@ -20,8 +20,8 @@ jobs:
           node-version: 22.22.1
           registry-url: https://registry.npmjs.org
 
-      - name: Upgrade npm for OIDC provenance
-        run: npm install -g npm@10.9.4
+      - name: Upgrade npm for OIDC trusted publishing
+        run: npm install -g npm@latest
 
       - name: Publish with provenance (OIDC trusted publisher)
         run: npm publish --provenance --access public
