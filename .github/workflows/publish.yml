@@ -21,7 +21,12 @@ jobs:
           registry-url: https://registry.npmjs.org
 
       - name: Upgrade npm for OIDC trusted publishing
-        run: npm install -g npm@latest
+        # Pinned, not @latest. Node is pinned to 22.22.1 above, and npm@latest
+        # rolled to 12.0.2 which requires node ^22.22.2, so @latest started
+        # failing EBADENGINE on a workflow that had not changed. 11.19.0 runs
+        # on 22.22.1 and is well past 11.5.1, where OIDC trusted publishing
+        # landed. Bump both pins together or not at all.
+        run: npm install -g npm@11.19.0
 
       - name: Publish with provenance (OIDC trusted publisher)
         run: npm publish --provenance --access public
