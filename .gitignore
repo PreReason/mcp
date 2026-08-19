@@ -3,3 +3,9 @@ node_modules/
 *.tgz
 .env
 .env.*
+
+# mcp-publisher tooling: credentials and downloaded binaries, never commit
+.mcpregistry_*
+mcp-publisher
+mcp-publisher.exe
+mcp-publisher.tar.gz

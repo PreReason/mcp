@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.2 (2026-08-19)
+
+### Fixed
+- Briefing count was 17 everywhere; the catalog has served 18 since `btc.etf-flows` (Basic) went live. README tier tables, package description, and server.json now agree with the API.
+- Metric count was 30; the API reports 116.
+
 ## 0.3.0 (2026-04-12)
 
 ### Added

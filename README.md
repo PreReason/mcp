@@ -10,7 +10,7 @@
 
 **MCP server for [PreReason](https://www.prereason.com) - the Context API for financial agents.**
 
-Give your agent market context, not raw price feeds. 17 briefings covering BTC, macro,<br>
+Give your agent market context, not raw price feeds. 18 briefings covering BTC, macro,<br>
 cross-asset regimes, and liquidity - each with trend signals, confidence scores, and causal narratives.
 
 </div>
@@ -95,13 +95,13 @@ Restart your MCP client after editing the config. PreReason should appear with 5
 
 | Tool | Auth | Description |
 |------|------|-------------|
-| `list_briefings` | Open | List all 17 pre-reasoned market briefings with tier requirements |
+| `list_briefings` | Open | List all 18 pre-reasoned market briefings with tier requirements |
 | `list_metrics` | Open | List all 30 available metrics across bitcoin, macro, and calculated categories |
 | `get_health` | Open | API health check, version, account tier |
 | `get_context` | Required | Fetch a pre-reasoned market briefing (markdown or JSON) |
 | `get_metric` | Required | Fetch a single metric with trend/signal/percentile |
 
-## 17 Market Briefings
+## 18 Market Briefings
 
 ### Free (6 briefings)
 | Briefing | Description |
@@ -113,7 +113,7 @@ Restart your MCP client after editing the config. PreReason should appear with 5
 | `btc.pulse` | Volume, fees, mempool analysis |
 | `btc.grid-stress` | Epoch pace and difficulty adjustment forecast |
 
-### Basic - $19.99/mo (5 briefings)
+### Basic - $19.99/mo (6 briefings)
 | Briefing | Description |
 |----------|-------------|
 | `btc.momentum` | 200D MA support/resistance with 7d/30d/90d momentum and YTD percentiles |
@@ -121,6 +121,7 @@ Restart your MCP client after editing the config. PreReason should appear with 5
 | `btc.on-chain` | Hash rate, difficulty, fees, mempool health |
 | `cross.breadth` | Cross-asset breadth with SPY, DXY, VIX |
 | `btc.miner-survival` | Hashprice thermometer with miner stress scoring |
+| `btc.etf-flows` | Spot BTC ETF net daily flows, aggregate AUM, and per-issuer breakdown |
 
 ### Pro - $49.99/mo (6 briefings)
 | Briefing | Description |

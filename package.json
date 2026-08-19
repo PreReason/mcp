@@ -1,9 +1,9 @@
 {
   "name": "@prereason/mcp",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "mcpName": "io.github.PreReason/mcp",
   "type": "module",
-  "description": "MCP server for PreReason — the Context API for financial agents. 17 pre-reasoned market briefings with trend signals, regime classification, confidence scores, and cross-asset correlations.",
+  "description": "MCP server for PreReason — the Context API for financial agents. 18 pre-reasoned market briefings with trend signals, regime classification, confidence scores, and cross-asset correlations.",
   "bin": {
     "prereason-mcp": "./bin/cli.js"
   },
