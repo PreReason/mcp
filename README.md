@@ -1,4 +1,4 @@
-<div align="center">
+﻿<div align="center">
 
 # @prereason/mcp
 
@@ -7,6 +7,7 @@
 [![node version](https://img.shields.io/node/v/@prereason/mcp.svg)](https://nodejs.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Glama Score](https://glama.ai/mcp/servers/PreReason/mcp/badges/score.svg)](https://glama.ai/mcp/servers/PreReason/mcp)
+[![smithery badge](https://smithery.ai/badge/prereason/briefings)](https://smithery.ai/servers/prereason/briefings)
 
 **MCP server for [PreReason](https://www.prereason.com).**
 
