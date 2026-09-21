@@ -1,0 +1,57 @@
+{
+  "manifest_version": "0.3",
+  "name": "prereason",
+  "display_name": "PreReason",
+  "version": "0.4.0",
+  "description": "Bitcoin and macro market briefings for your assistant: trend signals, regimes, liquidity and ETF flows. Needs no key to start; approve one link and the key arrives on its own.",
+  "long_description": "PreReason returns market context an assistant can reason with instead of raw numbers: 18 briefings across Bitcoin, macro liquidity, FX and cross-asset correlations, each with trend signals, regime classification and confidence scores, plus 119 individual metrics with interpretation. The three catalogue tools work without an account. When a briefing needs a key, the extension asks for access from inside the conversation: you open one link, sign in or create a free account, click Approve, and the key is saved on this computer, attached to your account. Nothing is created without that approval.",
+  "author": {
+    "name": "PreReason",
+    "url": "https://www.prereason.com"
+  },
+  "homepage": "https://www.prereason.com",
+  "documentation": "https://www.prereason.com/docs#agent-access",
+  "support": "https://www.prereason.com/docs#agent-access",
+  "icon": "icon.png",
+  "server": {
+    "type": "node",
+    "entry_point": "bin/cli.js",
+    "mcp_config": {
+      "command": "node",
+      "args": ["${__dirname}/bin/cli.js"],
+      "env": {
+        "PREREASON_API_KEY": "${user_config.api_key}",
+        "PREREASON_CLIENT": "claude-desktop"
+      }
+    }
+  },
+  "user_config": {
+    "api_key": {
+      "type": "string",
+      "title": "PreReason API key",
+      "description": "Optional. Leave empty: the extension asks for access from inside Claude and you approve one link. Paste a pr_live_ key here only if you already have one.",
+      "sensitive": true,
+      "required": false
+    }
+  },
+  "tools": [
+    { "name": "list_briefings", "description": "List the pre-reasoned market briefings with tier requirements" },
+    { "name": "list_metrics", "description": "List every available metric with its category" },
+    { "name": "get_health", "description": "API status and version" },
+    { "name": "request_access", "description": "Ask for a free key from inside the session; returns the approve link" },
+    { "name": "check_access", "description": "Collect the key once the link was approved" },
+    { "name": "get_context", "description": "A pre-reasoned market briefing (markdown or JSON)" },
+    { "name": "get_metric", "description": "One metric with signal, trend and percentile" }
+  ],
+  "tools_generated": false,
+  "keywords": ["bitcoin", "macro", "market briefings", "liquidity", "finance", "regime", "context"],
+  "license": "MIT",
+  "privacy_policies": ["https://www.prereason.com/privacy"],
+  "compatibility": {
+    "claude_desktop": ">=0.10.0",
+    "platforms": ["darwin", "win32"],
+    "runtimes": {
+      "node": ">=18.0.0"
+    }
+  }
+}

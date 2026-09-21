@@ -1,0 +1,16 @@
+{
+  "$schema": "https://context7.com/schema/context7.json",
+  "projectTitle": "PreReason",
+  "description": "Bitcoin and macro market briefings for AI agents: trend signals, regimes, liquidity and ETF flows.",
+  "folders": [],
+  "excludeFolders": ["test", "mcpb", ".github"],
+  "excludeFiles": ["CHANGELOG.md", "SECURITY.md", "LICENSE"],
+  "rules": [
+    "Call `list_briefings` first to read the live catalogue, then `get_context` with one of the ids it returned. Do not hard code a briefing id or a catalogue size.",
+    "`list_briefings`, `list_metrics` and `get_health` need no API key. `get_context` and `get_metric` need one.",
+    "Send the key as the header `Authorization: Bearer <key>`, or as `X-API-Key: <key>`. Never put a key in a URL.",
+    "An agent with no key can get a free one from inside the session: call `request_access`, show the `approve_url` to a person, then poll `check_access` until it returns the key.",
+    "Ask for `markdown` by default. Ask for `json` only when the fields are needed for a computation.",
+    "A briefing describes market conditions. It is not a forecast and not investment advice."
+  ]
+}

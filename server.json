@@ -1,27 +1,40 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
-  "name": "io.github.PreReason/mcp",
-  "description": "Pre-reasoned Bitcoin and macro market briefings for AI agents. 18 briefings, 116 metrics.",
+  "name": "com.prereason/mcp",
+  "title": "PreReason",
+  "description": "Bitcoin and macro market briefings for AI agents: trend signals, regimes, liquidity and ETF flows.",
   "repository": {
     "url": "https://github.com/PreReason/mcp",
     "source": "github"
   },
-  "version": "0.3.2",
+  "websiteUrl": "https://www.prereason.com",
+  "version": "0.8.0",
+  "icons": [
+    { "src": "https://www.prereason.com/logos/logo-128.png", "mimeType": "image/png", "sizes": ["128x128"] },
+    { "src": "https://www.prereason.com/logos/logo-mark.svg", "mimeType": "image/svg+xml", "sizes": ["any"] }
+  ],
   "packages": [
     {
       "registryType": "npm",
       "identifier": "@prereason/mcp",
-      "version": "0.3.2",
+      "version": "0.4.0",
       "transport": {
         "type": "stdio"
       },
       "environmentVariables": [
         {
-          "description": "PreReason API key (starts with pr_live_). Get one free at prereason.com/signup. Optional if using OAuth.",
+          "name": "PREREASON_API_KEY",
+          "description": "PreReason API key (starts with pr_live_). Optional: without it the bridge asks for access from inside the session and prints one link for you to approve; the key is then saved under ~/.prereason. Or sign up at prereason.com.",
           "isRequired": false,
           "format": "string",
-          "isSecret": true,
-          "name": "PREREASON_API_KEY"
+          "isSecret": true
+        },
+        {
+          "name": "PREREASON_CLIENT",
+          "description": "The app this bridge runs in (claude-desktop, cursor, windsurf, claude-code, ...), so your PreReason dashboard names the connection.",
+          "isRequired": false,
+          "format": "string",
+          "isSecret": false
         }
       ]
     }
@@ -30,7 +43,14 @@
     {
       "type": "streamable-http",
       "url": "https://api.prereason.com/api/mcp",
-      "authorizationType": "oauth2"
+      "headers": [
+        {
+          "name": "X-API-Key",
+          "description": "PreReason API key, pasted as is with no prefix. Optional: without it the catalogue tools work, and the request_access tool gets a free key from inside the session (a person approves one link).",
+          "isRequired": false,
+          "isSecret": true
+        }
+      ]
     }
   ]
 }

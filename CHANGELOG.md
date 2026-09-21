@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.4.0 (unreleased)
+
+### Added
+- The bridge gets its own key. With no `PREREASON_API_KEY` and no saved key it asks PreReason for access, prints one link to stderr (`Open https://www.prereason.com/claim/PR-XXXX-XXXX to approve access`), keeps serving the free tools, and polls until the person approves. The key arrives once, is saved to `~/.prereason/credentials.json` (0700 directory, 0600 file on POSIX; Windows has no mode bits), and is attached to the running connection without a restart. While the link is pending, any `AUTH_REQUIRED` tool result starts with `Approve at <link>` so the assistant can relay it, because a person inside Claude Desktop never sees this process's stderr.
+- `--login` (ask for access now, save the key, exit), `--logout` (forget the saved key), `--credentials-file <path>` and `PREREASON_CREDENTIALS_FILE`.
+- `PREREASON_CLIENT` (for example `claude-desktop`) is forwarded as `X-PreReason-Client` so the dashboard names the connection; every request carries `User-Agent: prereason-mcp/0.4.0`.
+- `node --test` suite under `test/`: key precedence, file modes, the poll loop against a stubbed server, and that a claim token never touches the disk.
+- `mcpb/manifest.json`: the Claude Desktop extension manifest for a single click install (`npx @anthropic-ai/mcpb pack`), with the key optional.
+
+### Changed
+- Key precedence is documented and tested: `PREREASON_API_KEY`, then `--header`, then the credentials file, then the claim flow.
+- `@modelcontextprotocol/sdk` 1.27.1 to 1.30.0.
+- The version is one number again: `cli.js` printed 0.3.1 while `package.json` said 0.3.2 and `server.json` 0.3.1.
+- `server.json` (the registry entry) returns to `com.prereason/mcp`, the name that has been live in the registry since March; the July rename to `io.github.PreReason/mcp` was never published.
+- `server.json` names the `X-API-Key` header on the remote, the header the published record already declares. The server accepts `Authorization: Bearer` as well. A registry client prompts a person for the header value, and with `X-API-Key` they paste the bare key: there is no `Bearer ` prefix to forget, and a key pasted without one into `Authorization` is silently treated as no key at all.
+- `server.json` `description` is the one line every listing now carries, at 98 characters. It was 196, and the registry rejects anything over 100, so the record could not have been published.
+- `server.json` `version` is 0.8.0 while the npm package stays 0.4.0. The registry marks a record latest only when its version sorts above the current latest, which is 0.7.2, so a record published as 0.4.0 would have been accepted and then ignored by everything downstream.
+- README: the no key path comes first; OAuth is not offered until it is verified. The opening paragraph is the canonical directory copy.
+
 ## 0.3.2 (2026-08-19)
 
 ### Fixed
