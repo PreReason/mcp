@@ -1,16 +1,32 @@
 version: 2
+
+# What this file does and does not do.
+#
+# socket.yml configures the Socket GitHub app and the Socket CLI for this
+# repository. It has no effect on the public score at
+# socket.dev/npm/package/@prereason/mcp, which Socket computes from the
+# published tarball and the registry, and which never sees this file: it is
+# not in the "files" list in package.json, so it is not in the tarball either.
+#
+# Every rule below now describes this package's own code. The list of
+# transitive suppressions that used to sit here is gone along with the
+# dependency that caused it: as of 0.5.0 the bridge has no dependencies.
+
 issueRules:
-  # === Expected for a stdio-to-HTTP MCP bridge ===
-  networkAccess: false        # Core function: bridges stdio to remote HTTP endpoint
-  envVars: false              # Documented config: PREREASON_API_KEY, PREREASON_URL
-  # === Transitive deps from @modelcontextprotocol/sdk ===
-  usesEval: false             # ajv JSON schema compilation uses new Function() — standard practice
-  shellAccess: false          # cross-spawn — SDK dev tooling, not invoked at runtime by our code
-  filesystemAccess: false     # express/send/serve-static — SDK server internals, unused by our bridge
-  debugAccess: false          # debug package — standard Node.js logging, no security concern
-  dynamicRequire: false       # ajv/require-from-string — JSON schema compilation internals
-  minifiedCode: false         # hono ships minified — upstream build artifact
-  highEntropyStrings: false   # Compiled/hashed constants in upstream deps
-  urlStrings: false           # Expected: HTTP URLs in a network protocol library
-  unmaintained: false         # Stable micro-packages (wrappy, once, inherits, etc.) — intentionally finished
-  newAuthor: false            # SDK ecosystem version bumps with maintainer additions
+  # A bridge is a network client. Relaying JSON-RPC to
+  # https://api.prereason.com/api/mcp is the whole job, which is also why that
+  # URL is in the source and reads as a URL string.
+  networkAccess: false
+  urlStrings: false
+
+  # Documented configuration, all of it optional: PREREASON_API_KEY,
+  # PREREASON_URL, PREREASON_CREDENTIALS_FILE, PREREASON_CLIENT.
+  envVars: false
+
+  # The credentials file. A key claimed from inside a session is written to
+  # ~/.prereason/credentials.json, 0700 on the directory and 0600 on the file
+  # where the platform has mode bits. Nothing else is read or written.
+  filesystemAccess: false
+
+  # Popularity, not a finding.
+  unpopularPackage: false

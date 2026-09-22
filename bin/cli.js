@@ -27,14 +27,14 @@
  */
 
 import { platform } from 'node:os';
-import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
+import { StdioServerTransport } from '../lib/stdio.js';
+import { StreamableHttpClientTransport } from '../lib/streamable-http.js';
 import { credentialsPath, deleteCredentials, parseArgs, resolveApiKey } from '../lib/credentials.js';
 import { decorateAuthRequired, runClaimFlow } from '../lib/claim.js';
 
 // Keep in sync with package.json on each release
 const PKG_NAME = '@prereason/mcp';
-const PKG_VERSION = '0.4.0';
+const PKG_VERSION = '0.5.0';
 const DEFAULT_URL = 'https://api.prereason.com/api/mcp';
 const USER_AGENT = `prereason-mcp/${PKG_VERSION} node/${process.versions.node} (${platform()})`;
 
@@ -113,7 +113,7 @@ if (args.login) {
 
 // --- Transports: stdio to the host, Streamable HTTP to PreReason ---
 const stdio = new StdioServerTransport();
-const http = new StreamableHTTPClientTransport(url, { requestInit: { headers } });
+const http = new StreamableHttpClientTransport(url, { requestInit: { headers } });
 
 /** While a claim is pending, the approve link the tool results carry. */
 const pending = { approveUrl: null, claimCode: null };

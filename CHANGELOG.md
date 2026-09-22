@@ -1,6 +1,23 @@
 # Changelog
 
-## 0.4.0 (unreleased)
+## 0.5.0 (2026-09-21)
+
+### Removed
+- `@modelcontextprotocol/sdk`, the only dependency. The bridge now installs nothing. It used the SDK for two classes, `StdioServerTransport` and `StreamableHTTPClientTransport`, and paid 91 packages and 25 MB on disk for them: Express, Hono, CORS, `express-rate-limit`, `jose`, `pkce-challenge`, `ajv`, `zod` and the rest are the SDK server and OAuth halves, and a relay calls none of them. The published tarball is 23 KB, `npm ls` is one line, and the code a security review has to read is the code in this repository.
+
+### Added
+- `lib/stdio.js`: newline delimited JSON-RPC over stdin and stdout, with the SDK framing kept exactly, including the 10 MB line ceiling, the carriage return before the newline, and the rule that a line which will not parse is reported and skipped rather than ending the session.
+- `lib/streamable-http.js`: the Streamable HTTP client. POST a frame, read the answer as JSON or as an event stream, carry `Mcp-Session-Id` onto later requests, open the optional GET stream once the session is initialized, and treat a 405 there as the server saying it has none, which is what PreReason answers. Headers are read from `requestInit` on every request rather than copied once, because the claim flow attaches `Authorization` to that same object after the transport has started.
+- `lib/sse.js`: a Server-Sent Events decoder following the same buffering rules as `eventsource-parser`, including the carriage return split across two chunks that would otherwise turn one event into two.
+- `lib/jsonrpc.js`: the shape check that replaces the SDK zod schema. A relay has no reason to validate methods or params, only to be sure it is not writing a bare string to a host that would treat the stream as corrupt.
+- `test/` grows to 71 cases across six files, among them `test/bridge.test.js`, which spawns `bin/cli.js` against a stub server and asserts on the headers that reach the wire. The suite runs on an empty `node_modules`, which is the proof there is nothing left to install.
+
+### Changed
+- `socket.yml` describes this package own code and nothing else, and says in the file what it is for: it configures the Socket GitHub app and CLI for this repository, and has no effect on the public package score.
+- `server.json` registry version 0.8.2, npm package 0.5.0.
+
+
+## 0.4.0 (2026-09-21)
 
 ### Added
 - The bridge gets its own key. With no `PREREASON_API_KEY` and no saved key it asks PreReason for access, prints one link to stderr (`Open https://www.prereason.com/claim/PR-XXXX-XXXX to approve access`), keeps serving the free tools, and polls until the person approves. The key arrives once, is saved to `~/.prereason/credentials.json` (0700 directory, 0600 file on POSIX; Windows has no mode bits), and is attached to the running connection without a restart. While the link is pending, any `AUTH_REQUIRED` tool result starts with `Approve at <link>` so the assistant can relay it, because a person inside Claude Desktop never sees this process's stderr.

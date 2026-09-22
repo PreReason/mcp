@@ -1,4 +1,4 @@
-﻿<div align="center">
+<div align="center">
 
 # @prereason/mcp
 
@@ -15,13 +15,13 @@ Bitcoin and macro market briefings for AI agents: trend signals, regimes, liquid
 
 </div>
 
-PreReason gives an AI agent market context it can reason with, in place of raw numbers. One call returns a briefing on Bitcoin, macro liquidity, FX or the links between assets, and the analysis is already in it: a signal line, trend direction over several windows, a regime label, confidence scores, percentile ranks, correlations and a plain language narrative. The catalogue holds 18 live briefings and 119 individual metrics, covering Bitcoin price and momentum, network and miner health, spot Bitcoin ETF flows, corporate Bitcoin treasuries, the Fed balance sheet, M2, net liquidity, Treasury yields and the dollar. It is served over MCP (a remote server and an npm bridge) and over REST, as Markdown or JSON. The catalogue tools need no key, and an agent can get a free key from inside the session: it shows one link, a person approves it, and the key arrives.
+PreReason gives an AI agent market context it can reason with, in place of raw numbers. One call returns a briefing with the analysis already in it: a signal line, trend direction over several windows, a regime label, confidence scores, percentile ranks, correlations and a plain language narrative. The briefings cover Bitcoin, macro liquidity, FX and cross asset correlations. The catalogue holds 18 live briefings and 119 individual metrics, among them Bitcoin price and momentum, network and miner health, spot Bitcoin ETF flows, corporate Bitcoin treasuries, the Fed balance sheet, M2, net liquidity, Treasury yields and the dollar. It is served over MCP (a remote server and an npm bridge) and over REST, as Markdown or JSON. The catalogue tools need no key, and an agent can get a free key from inside the session: it shows one link, a person approves it, and the key arrives.
 
 ## Quick Start
 
 ### Option 1: Claude Desktop, no key needed
 
-**Requires [Node.js 18+](https://nodejs.org)**
+**Requires [Node.js 18+](https://nodejs.org), and nothing else: the bridge has no dependencies.**
 
 Add this to `claude_desktop_config.json` and restart Claude Desktop:
 
@@ -213,6 +213,12 @@ Key precedence: `PREREASON_API_KEY`, then `--header`, then the credentials file 
 
 `mcpb/manifest.json` describes the same bridge as a single click Claude Desktop extension, key optional. To build the bundle: `npm install --omit=dev`, then `npx @anthropic-ai/mcpb pack .` from the package directory, and install the resulting `.mcpb` by double clicking it. Submission to the Claude directory goes through the desktop extension form and is a publisher decision.
 
+## No dependencies
+
+The bridge ships its own transports and installs nothing. `npm ls` on it is one line, `npx @prereason/mcp` fetches one 23 KB tarball and starts, and the code a security review has to read is the code in this repository.
+
+It used to depend on `@modelcontextprotocol/sdk` for two classes, a stdio transport and a Streamable HTTP client. That pulled in 91 packages and 25 MB on disk, nearly all of it the SDK server half: Express, Hono, CORS, a rate limiter, an OAuth client and a schema validator, none of which a relay ever calls. `lib/stdio.js` and `lib/streamable-http.js` replace the two classes the bridge used, keep their framing and their callbacks, and are covered by the suite under `test/`.
+
 ## Links
 
 - [Documentation](https://www.prereason.com/docs#mcp)
@@ -228,4 +234,3 @@ See [prereason.com/privacy](https://www.prereason.com/privacy) for data handling
 ## License
 
 MIT
-

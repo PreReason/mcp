@@ -2,7 +2,7 @@
   "manifest_version": "0.3",
   "name": "prereason",
   "display_name": "PreReason",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Bitcoin and macro market briefings for your assistant: trend signals, regimes, liquidity and ETF flows. Needs no key to start; approve one link and the key arrives on its own.",
   "long_description": "PreReason returns market context an assistant can reason with instead of raw numbers: 18 briefings across Bitcoin, macro liquidity, FX and cross-asset correlations, each with trend signals, regime classification and confidence scores, plus 119 individual metrics with interpretation. The three catalogue tools work without an account. When a briefing needs a key, the extension asks for access from inside the conversation: you open one link, sign in or create a free account, click Approve, and the key is saved on this computer, attached to your account. Nothing is created without that approval.",
   "author": {
