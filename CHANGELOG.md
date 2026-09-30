@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.5.1 (2026-09-30)
+
+### Changed
+- The README and the desktop extension manifest count 19 live briefings. `macro.rates` (Pro: the Treasury yield curve at 3M, 2Y, 5Y, 10Y and 30Y, breakeven inflation, the 5y5y forward and the Germany 10Y) went live on 2026-09-27. The bridge needed no change for it: it relays whatever `list_briefings` returns.
+- The same day the curve gained nine maturities read from the US Treasury's own par yield curve (1M, 1.5M, 2M, 4M, 6M, 1Y, 3Y, 7Y and 20Y), so `macro.rates` carries every maturity on that curve, fourteen, and the catalogue counts 212 metrics.
+- README: the example prompts lead with two free briefings, `btc.quick-check` and `btc.context`, in place of two that need Pro, and the `btc.momentum` row says percentile rankings in place of YTD percentiles, a span that briefing never ranked over.
+- README and desktop extension manifest: they no longer say every briefing carries a regime label and a narrative (the deeper briefings add them). Six briefing rows name what each one holds (`macro.snapshot`, `btc.pulse`, `btc.on-chain`, `cross.breadth`, `btc.full`, `fx.liquidity`), `list_metrics` names its four categories with `eth` among them, and the link for clients that take a remote server points at Option 2 (direct HTTP) in place of a heading that does not exist.
+- `server.json` registry version 0.8.2, npm package 0.5.1. The 0.8.2 record was never published, so it names this release in place of 0.5.0.
+
+### Fixed
+- An approval on an account that already holds its limit of API keys no longer polls until the link expires. The server answers `KEY_LIMIT_REACHED` with no `retry_after`, because polling cannot clear it, but the bridge treated every approval without a key as a failed mint and asked again every five seconds, so the person watched nothing happen for the rest of the claim's life. The bridge now stops on the first such answer and prints one line naming the count (`this account already has 2 of 2 API keys`), where to revoke a key (Settings, on the same site as the approve link) and the other way out (`PREREASON_API_KEY` set to a key you already have). Any later `AUTH_REQUIRED` tool result starts with the same guidance in place of the approve link, because a person inside Claude Desktop never sees stderr. `--login` exits 1 in this case. `KEY_ISSUE_FAILED` still retries after `retry_after`, exactly as before.
+- `test/claim.test.js` gains four cases, and the suite is 75.
+
 ## 0.5.0 (2026-09-21)
 
 ### Removed

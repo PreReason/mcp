@@ -15,7 +15,7 @@ Bitcoin and macro market briefings for AI agents: trend signals, regimes, liquid
 
 </div>
 
-PreReason gives an AI agent market context it can reason with, in place of raw numbers. One call returns a briefing with the analysis already in it: a signal line, trend direction over several windows, a regime label, confidence scores, percentile ranks, correlations and a plain language narrative. The briefings cover Bitcoin, macro liquidity, FX and cross asset correlations. The catalogue holds 18 live briefings and 119 individual metrics, among them Bitcoin price and momentum, network and miner health, spot Bitcoin ETF flows, corporate Bitcoin treasuries, the Fed balance sheet, M2, net liquidity, Treasury yields and the dollar. It is served over MCP (a remote server and an npm bridge) and over REST, as Markdown or JSON. The catalogue tools need no key, and an agent can get a free key from inside the session: it shows one link, a person approves it, and the key arrives.
+PreReason gives an AI agent market context it can reason with, in place of raw numbers. One call returns a briefing with the analysis already in it: a signal line, trend direction over several windows, confidence scores, percentile ranks and correlations, and in the deeper briefings a regime label and a plain language narrative. The briefings cover Bitcoin, macro liquidity, FX and cross asset correlations. The catalogue holds 19 live briefings and 212 individual metrics, among them Bitcoin price and momentum, network and miner health, spot Bitcoin ETF flows, corporate Bitcoin treasuries, the Fed balance sheet, M2, net liquidity, Treasury yields and the dollar. It is served over MCP (a remote server and an npm bridge) and over REST, as Markdown or JSON. The catalogue tools need no key, and an agent can get a free key from inside the session: it shows one link, a person approves it, and the key arrives.
 
 ## Quick Start
 
@@ -37,7 +37,7 @@ Add this to `claude_desktop_config.json` and restart Claude Desktop:
 }
 ```
 
-The catalogue tools work at once. The first time a briefing needs a key, the bridge asks for access: ask Claude for any briefing and the answer starts with `Approve at https://www.prereason.com/claim/PR-XXXX-XXXX`. Open the link, sign in or create a free account, click Approve. The key arrives in the bridge on its own, is saved to `~/.prereason/credentials.json`, and the next call works. Nothing is created in your account until you click Approve.
+The catalogue tools work at once. The first time a briefing needs a key, the bridge asks for access: ask Claude for any briefing and the answer starts with `Approve at https://www.prereason.com/claim/PR-XXXX-XXXX`. Open the link, sign in or create a free account, click Approve. The key arrives in the bridge on its own, is saved to `~/.prereason/credentials.json`, and the next call works. Nothing is created in your account until you click Approve. If your account already holds as many API keys as it allows, the answer says so instead of looping: revoke a key under Settings on prereason.com and restart Claude, or set `PREREASON_API_KEY` to a key you already have.
 
 Config file location:
 - **macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`
@@ -87,53 +87,54 @@ Three ways, all free:
 
 | Tool | Auth | Description |
 |------|------|-------------|
-| `list_briefings` | Open | List all 18 pre-reasoned market briefings with tier requirements |
-| `list_metrics` | Open | List every available metric across bitcoin, macro, and calculated categories |
+| `list_briefings` | Open | List all 19 pre-reasoned market briefings with tier requirements |
+| `list_metrics` | Open | List every available metric across the bitcoin, macro, calculated and eth categories |
 | `get_health` | Open | API health check, version, account tier |
 | `request_access` | Open | Start getting a free key from inside the session; returns the approve link for the human |
 | `check_access` | Open | Poll that claim; the first poll after approval returns the key once |
 | `get_context` | Required | Fetch a pre-reasoned market briefing (markdown or JSON) |
 | `get_metric` | Required | Fetch a single metric with trend/signal/percentile |
 
-## 18 Market Briefings
+## 19 Market Briefings
 
 ### Free (6 briefings)
 | Briefing | Description |
 |----------|-------------|
 | `btc.quick-check` | Minimal fast context: BTC + Net Liquidity + correlation |
 | `btc.context` | BTC + liquidity + hash ribbon + difficulty + momentum |
-| `macro.snapshot` | Fed balance, M2, treasury yields, VIX, net liquidity |
+| `macro.snapshot` | Fed balance, M2, treasury yields, dollar strength, net liquidity |
 | `cross.correlations` | BTC correlation matrix vs macro indicators |
-| `btc.pulse` | Volume, fees, mempool analysis |
+| `btc.pulse` | Price, 24h change, Bitcoin dominance |
 | `btc.grid-stress` | Epoch pace and difficulty adjustment forecast |
 
 ### Basic - $19.99/mo (6 briefings)
 | Briefing | Description |
 |----------|-------------|
-| `btc.momentum` | 200D MA support/resistance with 7d/30d/90d momentum and YTD percentiles |
+| `btc.momentum` | 200D MA support/resistance with 7d/30d/90d momentum and percentile rankings |
 | `macro.liquidity` | Liquidity indicators with momentum analysis |
-| `btc.on-chain` | Hash rate, difficulty, fees, mempool health |
-| `cross.breadth` | Cross-asset breadth with SPY, DXY, VIX |
+| `btc.on-chain` | Hash rate, difficulty, transactions, active addresses |
+| `cross.breadth` | Breadth across SPY, QQQ and IWM, with Bitcoin's correlation to each |
 | `btc.miner-survival` | Hashprice thermometer with miner stress scoring |
 | `btc.etf-flows` | Spot BTC ETF net daily flows, aggregate AUM, and per-issuer breakdown |
 
-### Pro - $49.99/mo (6 briefings)
+### Pro - $49.99/mo (7 briefings)
 | Briefing | Description |
 |----------|-------------|
-| `btc.full` | Complete market intelligence with all metrics and analysis |
+| `btc.full` | Full Bitcoin analysis: macro overlay, momentum, percentiles, correlations and narrative |
 | `btc.factors` | Multi-factor attribution for BTC price movements |
 | `cross.regime` | Regime classification (risk-on/risk-off/transition) with USDT.D risk sentiment |
-| `fx.liquidity` | FX environment with DXY, treasury, and global liquidity |
+| `fx.liquidity` | EUR/USD, USD/CNY and dollar strength, with net liquidity and Bitcoin correlations |
 | `btc.energy` | Production cost model with gas input pressure |
 | `btc.treasury` | Corporate Bitcoin treasury intelligence from SEC filings |
+| `macro.rates` | Treasury par yield curve at every maturity, 1M to 30Y, breakeven inflation, 5y5y forward, Germany 10Y |
 
 ## Example Prompts
 
 Once connected, try prompts like:
 
-- "What's the current BTC regime?"
+- "Give me the Bitcoin quick check"
 - "Show me the macro snapshot"
-- "What does the full context briefing say about market conditions?"
+- "What does the BTC context briefing say about market conditions?"
 - "Get the bitcoin price metric with trend analysis"
 - "What's the hash ribbon signal right now?"
 - "List available briefings"
@@ -179,7 +180,7 @@ If you still see this error, ensure you're using the `env` block (not `--header`
 
 ## Other MCP Clients
 
-If your client supports remote HTTP servers, use [Quick Start Option 1](#option-1-direct-http-claude-code-cursor-windsurf-etc) above. The stdio bridge package is only needed for clients that require stdio transport (e.g. Claude Desktop).
+If your client supports remote HTTP servers, use [Quick Start Option 2](#option-2-direct-http-with-an-api-key-claude-code-cursor-windsurf-codex-gemini-cli-vs-code-scripts) above. The stdio bridge package is only needed for clients that require stdio transport (e.g. Claude Desktop).
 
 ## CLI Usage
 

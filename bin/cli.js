@@ -30,11 +30,11 @@ import { platform } from 'node:os';
 import { StdioServerTransport } from '../lib/stdio.js';
 import { StreamableHttpClientTransport } from '../lib/streamable-http.js';
 import { credentialsPath, deleteCredentials, parseArgs, resolveApiKey } from '../lib/credentials.js';
-import { decorateAuthRequired, runClaimFlow } from '../lib/claim.js';
+import { decorateForClaimState, runClaimFlow } from '../lib/claim.js';
 
 // Keep in sync with package.json on each release
 const PKG_NAME = '@prereason/mcp';
-const PKG_VERSION = '0.5.0';
+const PKG_VERSION = '0.5.1';
 const DEFAULT_URL = 'https://api.prereason.com/api/mcp';
 const USER_AGENT = `prereason-mcp/${PKG_VERSION} node/${process.versions.node} (${platform()})`;
 
@@ -115,8 +115,11 @@ if (args.login) {
 const stdio = new StdioServerTransport();
 const http = new StreamableHttpClientTransport(url, { requestInit: { headers } });
 
-/** While a claim is pending, the approve link the tool results carry. */
-const pending = { approveUrl: null, claimCode: null };
+/**
+ * What AUTH_REQUIRED tool results carry: the approve link while a claim is
+ * pending, or the key limit notice once a claim ended there.
+ */
+const pending = { approveUrl: null, claimCode: null, notice: null };
 
 stdio.onmessage = (msg) => {
   http.send(msg).catch((e) => {
@@ -125,7 +128,7 @@ stdio.onmessage = (msg) => {
 };
 
 http.onmessage = (msg) => {
-  stdio.send(decorateAuthRequired(msg, pending.approveUrl)).catch((e) => {
+  stdio.send(decorateForClaimState(msg, pending)).catch((e) => {
     process.stderr.write(`[prereason:recv] ${e.message}\n`);
   });
 };
