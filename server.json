@@ -18,7 +18,7 @@
     {
       "registryType": "npm",
       "identifier": "@prereason/mcp",
-      "version": "0.5.1",
+      "version": "0.5.2",
       "transport": {
         "type": "stdio"
       },
@@ -47,7 +47,7 @@
       "headers": [
         {
           "name": "X-API-Key",
-          "description": "PreReason API key, pasted as is with no prefix. Optional: without it the catalogue tools work, and the request_access tool gets a free key from inside the session (a person approves one link).",
+          "description": "PreReason API key, pasted as is with no prefix. Optional: without it the catalogue tools work.",
           "isRequired": false,
           "isSecret": true
         }

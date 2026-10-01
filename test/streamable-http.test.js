@@ -151,6 +151,42 @@ test('a failing status throws with the body and reports through onerror', async 
   assert.equal(h.errors.length, 1);
 });
 
+test('a refusal worded as JSON-RPC is the answer: it reaches onmessage and send resolves', async () => {
+  // What PreReason sends: a 401 to a call that needs a key and carries none,
+  // a 429 past the quota. Thrown, they reached stderr and the host hung.
+  for (const [status, error] of [
+    [401, { code: -32001, message: 'Authentication required for this tool.' }],
+    [429, { code: -32029, message: 'Hourly limit reached (30/hr). Resets 2026-10-01T12:00:00.000Z.' }],
+  ]) {
+    const refusal = { jsonrpc: '2.0', id: 1, error };
+    const h = harness([json(refusal, { status })]);
+    await h.transport.start();
+    await h.transport.send(REQUEST);
+    assert.deepEqual(h.messages, [refusal], String(status));
+    assert.equal(h.errors.length, 0, String(status));
+  }
+});
+
+test('a refusal that is not JSON-RPC answers still fails, and nothing reaches the host', async () => {
+  for (const response of [
+    new Response('<html>Bad gateway</html>', { status: 502, headers: { 'content-type': 'text/html' } }),
+    json({ error: 'METHOD_NOT_ALLOWED' }, { status: 405 }),
+    json({ jsonrpc: '2.0', method: 'notifications/message', params: {} }, { status: 500 }),
+  ]) {
+    const h = harness([response]);
+    await h.transport.start();
+    await assert.rejects(() => h.transport.send(REQUEST), StreamableHttpError);
+    assert.deepEqual(h.messages, []);
+  }
+});
+
+test('a refused notification is not answered: it asked for nothing', async () => {
+  const h = harness([json({ jsonrpc: '2.0', id: null, error: { code: -32600, message: 'Invalid Request' } }, { status: 400 })]);
+  await h.transport.start();
+  await assert.rejects(() => h.transport.send(NOTIFICATION), StreamableHttpError);
+  assert.deepEqual(h.messages, []);
+});
+
 test('an unexpected content type is an error rather than a silent drop', async () => {
   const h = harness([new Response('<html></html>', { status: 200, headers: { 'content-type': 'text/html' } })]);
   await h.transport.start();

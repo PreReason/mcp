@@ -9,7 +9,7 @@
     "Call `list_briefings` first to read the live catalogue, then `get_context` with one of the ids it returned. Do not hard code a briefing id or a catalogue size.",
     "`list_briefings`, `list_metrics` and `get_health` need no API key. `get_context` and `get_metric` need one.",
     "Send the key as the header `Authorization: Bearer <key>`, or as `X-API-Key: <key>`. Never put a key in a URL.",
-    "An agent with no key can get a free one from inside the session: call `request_access`, show the `approve_url` to a person, then poll `check_access` until it returns the key.",
+    "The server never hands out a key and never asks for one. A person creates a key at https://www.prereason.com/signup, or the bridge `npx -y @prereason/mcp` asks for one on their behalf.",
     "Ask for `markdown` by default. Ask for `json` only when the fields are needed for a computation.",
     "A briefing describes market conditions. It is not a forecast and not investment advice."
   ]

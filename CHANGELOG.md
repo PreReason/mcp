@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.5.2 (2026-10-01)
+
+### Changed
+- 1 October 2026, the Free plan (a server change; the bridge relays it unchanged): a free key makes up to 30 calls an hour and 100 a day, down from 60 and 500. It reads the 17 Bitcoin metrics (the `bitcoin` category) in full, with their trends, and only the latest reading of every other metric: `get_metric` answers those with the value, when it was taken, its source and its freshness, and says so in `access`. `list_metrics` states the rule in its `free_key` field. Free accounts that made a call in the week before keep 60 an hour, 500 a day and every metric in full until further notice. Basic and Pro are unchanged. The dated notice is kept at https://www.prereason.com/docs#changelog.
+
+### Fixed
+- A request the bridge could not relay no longer hangs the host. Until now any non ok HTTP status made the transport throw, and the bridge only wrote `[prereason:send]` to stderr, so the host waited out its own timeout for an id that never came back. Two cases met it: a key past its quota (PreReason answers 429 with a JSON-RPC error), and, while sign in discovery was on in production from 2026-10-01 02:28Z, a call with no key (a 401; the server has since given the bridge's own user agent the readable `AUTH_REQUIRED` instead). Now a refusal the server words as JSON-RPC reaches the host as the answer, so the model reads "Hourly limit reached" or "Authentication required for this tool."; and any other failure (an error page, a network error) gets an error answer with the request's own id, naming the HTTP status and never repeating the body. A notification, which asks for nothing, still gets nothing.
+- `test/` gains eight cases (three in `streamable-http.test.js`, three in `jsonrpc.test.js`, two end to end in `bridge.test.js`), and the suite is 83.
+
 ## 0.5.1 (2026-09-30)
 
 ### Changed

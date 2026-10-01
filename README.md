@@ -67,7 +67,7 @@ claude mcp add --transport http prereason https://api.prereason.com/api/mcp --he
 }
 ```
 
-Windsurf uses `serverUrl` instead of `url`; Gemini CLI uses `httpUrl`; Codex uses `url` plus `bearer_token_env_var` in `config.toml`. No key yet? Point the client at the endpoint without a header and ask the assistant to call `request_access`; it walks you through the same one link approval and shows the key once, which you then paste into the config.
+Windsurf uses `serverUrl` instead of `url`; Gemini CLI uses `httpUrl`; Codex uses `url` plus `bearer_token_env_var` in `config.toml`. No key yet? Point the client at the endpoint without a header to browse the catalogue, then create a key on the website (below) and add the header.
 
 ### Option 3: Claude.ai and Claude Desktop custom connector
 
@@ -75,23 +75,21 @@ Windsurf uses `serverUrl` instead of `url`; Gemini CLI uses `httpUrl`; Codex use
 
 ## Get an API Key
 
-Three ways, all free:
+Three ways, all free. The hosted server never hands out a key inside a session and never asks for one.
 
-**From inside the session (any MCP client).** Ask your assistant to call `request_access`. It returns an `approve_url`; open it, sign in or create your account, click Approve. The assistant then calls `check_access` and receives the key once, attached to your account and named `Agent: <client_name>`.
+**Through this bridge.** Run it with no key set: it asks PreReason for access on your behalf and shows one `approve_url`, in its log and in front of any answer that needs a key. Open it, sign in or create your account, click Approve, and the bridge saves the key, attached to your account and named `Agent: <client_name>`.
 
 **From code, for an agent with no browser.** `POST https://api.prereason.com/api/agent/claims` (no auth), show the human the `approve_url`, then poll `GET https://api.prereason.com/api/agent/claims/{claim_code}` with `Authorization: Bearer <claim_token>` until `status` is `approved`. Docs: [prereason.com/docs#agent-access](https://www.prereason.com/docs#agent-access).
 
 **On the website.** Sign up at [prereason.com/signup](https://www.prereason.com/signup), then Dashboard > Settings > API Keys. Keys start with `pr_live_`.
 
-## 7 MCP Tools
+## 5 MCP Tools
 
 | Tool | Auth | Description |
 |------|------|-------------|
 | `list_briefings` | Open | List all 19 pre-reasoned market briefings with tier requirements |
 | `list_metrics` | Open | List every available metric across the bitcoin, macro, calculated and eth categories |
 | `get_health` | Open | API health check, version, account tier |
-| `request_access` | Open | Start getting a free key from inside the session; returns the approve link for the human |
-| `check_access` | Open | Poll that claim; the first poll after approval returns the key once |
 | `get_context` | Required | Fetch a pre-reasoned market briefing (markdown or JSON) |
 | `get_metric` | Required | Fetch a single metric with trend/signal/percentile |
 

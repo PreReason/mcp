@@ -31,10 +31,11 @@ import { StdioServerTransport } from '../lib/stdio.js';
 import { StreamableHttpClientTransport } from '../lib/streamable-http.js';
 import { credentialsPath, deleteCredentials, parseArgs, resolveApiKey } from '../lib/credentials.js';
 import { decorateForClaimState, runClaimFlow } from '../lib/claim.js';
+import { failureResponse } from '../lib/jsonrpc.js';
 
 // Keep in sync with package.json on each release
 const PKG_NAME = '@prereason/mcp';
-const PKG_VERSION = '0.5.1';
+const PKG_VERSION = '0.5.2';
 const DEFAULT_URL = 'https://api.prereason.com/api/mcp';
 const USER_AGENT = `prereason-mcp/${PKG_VERSION} node/${process.versions.node} (${platform()})`;
 
@@ -124,6 +125,14 @@ const pending = { approveUrl: null, claimCode: null, notice: null };
 stdio.onmessage = (msg) => {
   http.send(msg).catch((e) => {
     process.stderr.write(`[prereason:send] ${e.message}\n`);
+    // Never leave the host waiting on an id that will not come back: a
+    // request the relay could not deliver gets an error answer of its own.
+    const answer = failureResponse(msg, e);
+    if (answer) {
+      stdio.send(answer).catch((err) => {
+        process.stderr.write(`[prereason:recv] ${err.message}\n`);
+      });
+    }
   });
 };
 

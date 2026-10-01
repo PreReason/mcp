@@ -15,7 +15,7 @@ const KEY = `pr_test_${'k'.repeat(32)}`;
  * It records every request so the test can assert on the headers the bridge
  * put on the wire.
  */
-async function stubServer() {
+async function stubServer({ refuse } = {}) {
   const seen = [];
   const server = createServer((req, res) => {
     if (req.method === 'GET') {
@@ -33,6 +33,13 @@ async function stubServer() {
 
       if (frame.id === undefined) {
         res.writeHead(202).end();
+        return;
+      }
+      // A canned refusal, the way the real endpoint refuses: a status, a type, a body.
+      const refusal = refuse?.(frame);
+      if (refusal) {
+        res.writeHead(refusal.status, { 'content-type': refusal.contentType });
+        res.end(refusal.body);
         return;
       }
       res.writeHead(200, { 'content-type': 'application/json; charset=utf-8' });
@@ -145,4 +152,44 @@ test('closing stdin ends the bridge', async (t) => {
   bridge.child.stdin.end();
   const [code] = await once(bridge.child, 'exit');
   assert.equal(code, 0);
+});
+
+const TOOL_CALL = (id) => ({ jsonrpc: '2.0', id, method: 'tools/call', params: { name: 'get_context', arguments: { briefing: 'btc.full' } } });
+
+test('a refusal the server words as JSON-RPC reaches the host as the answer, and nothing hangs', async (t) => {
+  // PreReason's 429 past the quota and its 401 to a call with no key are both
+  // JSON-RPC errors. Before 0.5.2 the bridge threw on the status and the host
+  // waited out its own timeout.
+  const stub = await stubServer({
+    refuse: (frame) =>
+      frame.method === 'tools/call'
+        ? { status: 429, contentType: 'application/json', body: JSON.stringify({ jsonrpc: '2.0', id: frame.id, error: { code: -32029, message: 'Hourly limit reached (30/hr).' } }) }
+        : undefined,
+  });
+  const bridge = spawnBridge(stub.url);
+  t.after(() => {
+    bridge.child.kill();
+    stub.close();
+  });
+
+  bridge.send(TOOL_CALL(4));
+  assert.deepEqual(await bridge.nextFrame(), { jsonrpc: '2.0', id: 4, error: { code: -32029, message: 'Hourly limit reached (30/hr).' } });
+});
+
+test('a request answered with an error page still gets an answer the host can read', async (t) => {
+  const stub = await stubServer({
+    refuse: (frame) => (frame.method === 'tools/call' ? { status: 502, contentType: 'text/html', body: '<html>Bad gateway</html>' } : undefined),
+  });
+  const bridge = spawnBridge(stub.url);
+  t.after(() => {
+    bridge.child.kill();
+    stub.close();
+  });
+
+  bridge.send(TOOL_CALL(5));
+  assert.deepEqual(await bridge.nextFrame(), {
+    jsonrpc: '2.0',
+    id: 5,
+    error: { code: -32000, message: 'The PreReason bridge could not relay this request: HTTP 502.' },
+  });
 });
