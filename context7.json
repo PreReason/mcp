@@ -1,7 +1,7 @@
 {
   "$schema": "https://context7.com/schema/context7.json",
   "projectTitle": "PreReason",
-  "description": "Bitcoin and macro market briefings for AI agents: trend signals, regimes, liquidity and ETF flows.",
+  "description": "Financial market context for AI agents: macro, rates, bonds, FX, commodities, companies and Bitcoin.",
   "folders": [],
   "excludeFolders": ["test", "mcpb", ".github"],
   "excludeFiles": ["CHANGELOG.md", "SECURITY.md", "LICENSE"],

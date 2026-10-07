@@ -11,11 +11,11 @@
 
 **MCP server for [PreReason](https://www.prereason.com).**
 
-Bitcoin and macro market briefings for AI agents: trend signals, regimes, liquidity and ETF flows.
+Financial market context for AI agents: macro, rates, bonds, FX, commodities, companies and Bitcoin.
 
 </div>
 
-PreReason gives an AI agent market context it can reason with, in place of raw numbers. One call returns a briefing with the analysis already in it: a signal line, trend direction over several windows, confidence scores, percentile ranks and correlations, and in the deeper briefings a regime label and a plain language narrative. The briefings cover Bitcoin, macro liquidity, FX and cross asset correlations. The catalogue holds 19 live briefings and 212 individual metrics, among them Bitcoin price and momentum, network and miner health, spot Bitcoin ETF flows, corporate Bitcoin treasuries, the Fed balance sheet, M2, net liquidity, Treasury yields and the dollar. It is served over MCP (a remote server and an npm bridge) and over REST, as Markdown or JSON. The catalogue tools need no key, and an agent can get a free key from inside the session: it shows one link, a person approves it, and the key arrives.
+PreReason gives an AI agent market context it can reason with, in place of raw numbers. One call returns a briefing with the analysis already in it: a signal line, trend direction over several windows, confidence scores, percentile ranks and correlations, and in the deeper briefings a regime label and a plain language narrative. The briefings cover macro, bonds, FX, commodities, Bitcoin, Ethereum and cross asset correlations. Company briefings cover listed companies in US, Japan, Korea and India, one company per call. The catalogue holds 32 live briefings and 270 individual metrics, among them Treasury yields, the latest FOMC statement, Treasury auctions, who holds US Treasuries, the Fed balance sheet, M2, net liquidity, the dollar, US crude and gas inventories, gold, silver, copper and wheat, oil, mining and agribusiness companies beside their commodity, AI compute and power demand, Bitcoin price and momentum, Bitcoin network and miner health, spot Bitcoin ETF flows and corporate Bitcoin treasuries. It is served over MCP (a remote server and an npm bridge) and over REST, as Markdown or JSON. The catalogue tools need no key, and an agent can get a free key from inside the session: it shows one link, a person approves it, and the key arrives.
 
 ## Quick Start
 
@@ -83,17 +83,18 @@ Three ways, all free. The hosted server never hands out a key inside a session a
 
 **On the website.** Sign up at [prereason.com/signup](https://www.prereason.com/signup), then Dashboard > Settings > API Keys. Keys start with `pr_live_`.
 
-## 5 MCP Tools
+## 6 MCP Tools
 
 | Tool | Auth | Description |
 |------|------|-------------|
-| `list_briefings` | Open | List all 19 pre-reasoned market briefings with tier requirements |
+| `list_briefings` | Open | List all 32 pre-reasoned market briefings with tier requirements |
 | `list_metrics` | Open | List every available metric across the bitcoin, macro, calculated and eth categories |
 | `get_health` | Open | API health check, version, account tier |
 | `get_context` | Required | Fetch a pre-reasoned market briefing (markdown or JSON) |
 | `get_metric` | Required | Fetch a single metric with trend/signal/percentile |
+| `get_changes` | Required (Basic and above) | What changed since your last call: change events after a cursor, no values |
 
-## 19 Market Briefings
+## 32 Market Briefings
 
 ### Free (6 briefings)
 | Briefing | Description |
@@ -105,7 +106,7 @@ Three ways, all free. The hosted server never hands out a key inside a session a
 | `btc.pulse` | Price, 24h change, Bitcoin dominance |
 | `btc.grid-stress` | Epoch pace and difficulty adjustment forecast |
 
-### Basic - $19.99/mo (6 briefings)
+### Basic - $19.99/mo (13 briefings)
 | Briefing | Description |
 |----------|-------------|
 | `btc.momentum` | 200D MA support/resistance with 7d/30d/90d momentum and percentile rankings |
@@ -114,17 +115,30 @@ Three ways, all free. The hosted server never hands out a key inside a session a
 | `cross.breadth` | Breadth across SPY, QQQ and IWM, with Bitcoin's correlation to each |
 | `btc.miner-survival` | Hashprice thermometer with miner stress scoring |
 | `btc.etf-flows` | Spot BTC ETF net daily flows, aggregate AUM, and per-issuer breakdown |
+| `macro.auctions` | Treasury auction demand: who bought at the latest auction of each note and bond maturity, against that maturity's own prior 12 auctions, with the auctions announced and scheduled next |
+| `bonds.context` | Who holds US Treasuries, in short: foreign investors' net purchases (Treasury's TIC), primary dealers' 13 week change in positions (the New York Fed) and speculators' 10 year note futures position (the CFTC), each against its own history, with the 10 year yield and three bond funds |
+| `eth.context` | Where Ether stands: its price and global 24 hour volume from CoinGecko, its distance from the 200 day average, Lido's stETH APR, the CFTC's CME Ether positioning and OKX's funding rate |
+| `commodities.gold` | The gold fund (GLD) and gold's own monthly price from the World Bank, with the 10 year real rate, the dollar fund, the CFTC's COMEX gold positioning and the miners' fund, each with its measured relationship to GLD |
+| `commodities.silver` | The silver fund (SLV) and silver's own monthly price from the World Bank, with the CFTC's COMEX silver positioning and the gold, dollar, copper and silver miners' funds and the 10 year real rate, each with its measured relationship to SLV |
+| `commodities.copper` | A copper futures fund (CPER) and copper's own monthly price from the World Bank, with the CFTC's COMEX copper positioning and the dollar and gold funds, each with its measured relationship to CPER |
+| `commodities.wheat` | A wheat futures fund (WEAT) and US soft red winter wheat's own monthly price from the World Bank, with the CFTC's CBOT wheat positioning, the dollar fund and the WTI spot price, each with its measured relationship to WEAT |
 
-### Pro - $49.99/mo (7 briefings)
+### Pro - $49.99/mo (13 briefings)
 | Briefing | Description |
 |----------|-------------|
 | `btc.full` | Full Bitcoin analysis: macro overlay, momentum, percentiles, correlations and narrative |
 | `btc.factors` | Multi-factor attribution for BTC price movements |
-| `cross.regime` | Regime classification (risk-on/risk-off/transition) with USDT.D risk sentiment |
+| `cross.regime` | Regime classification (expansion, contraction, transition) with USDT dominance |
 | `fx.liquidity` | EUR/USD, USD/CNY and dollar strength, with net liquidity and Bitcoin correlations |
 | `btc.energy` | Production cost model with gas input pressure |
 | `btc.treasury` | Corporate Bitcoin treasury intelligence from SEC filings |
 | `macro.rates` | Treasury par yield curve at every maturity, 1M to 30Y, breakeven inflation, 5y5y forward, Germany 10Y |
+| `cross.ai-compute` | AI compute and power chain: US grid demand against a year earlier, miners' AI hosting agreements from SEC filings, hosting against mining per megawatt |
+| `commodities.energy-basket` | US oil and gas stocks against the five year norm from EIA's weekly reports, with WTI, Brent and Henry Hub spot prices, the Brent to WTI spread and WTI realised volatility |
+| `bonds.full` | Who holds US Treasuries: foreign investors, primary dealers and speculators, each against its own history, with the Fed's own Treasury holdings, debt held by the public, the largest foreign holders, what would change each reading and the next reports |
+| `commodities.oil-producers` | Crude oil beside its covered US producers: the energy basket's state, WTI and Brent spot prices from EIA, then each integrated major, producer and refiner and two oil field service companies, with its share price, its 1, 3 and 12 month changes beside WTI and the measured 90 day correlation with WTI |
+| `commodities.gold-miners` | The gold fund (GLD, a share price, not the gold price) and gold's own monthly price from the World Bank beside the covered US gold and silver miners and royalty and streaming companies, each with its share price, its 1, 3 and 12 month changes beside GLD and the measured 90 day correlation with GLD |
+| `commodities.grains-agribusiness` | The wheat futures fund (WEAT, not the wheat price) and US soft red winter wheat's own monthly price from the World Bank beside the covered US grain merchandisers and processors, seed and crop nutrient companies, farm equipment makers and farmland REITs, each with its share price, its 1, 3 and 12 month changes beside WEAT and the measured 90 day correlation with WEAT |
 
 ## Example Prompts
 
@@ -173,7 +187,7 @@ If you still see this error, ensure you're using the `env` block (not `--header`
 
 ### Auth errors on get_context / get_metric
 - `list_briefings`, `list_metrics`, and `get_health` work without a key
-- `get_context` and `get_metric` require a valid API key
+- `get_context` and `get_metric` require a valid API key, and `get_changes` a key on the Basic or Pro plan
 - Get a free key at [prereason.com/signup](https://www.prereason.com/signup)
 
 ## Other MCP Clients

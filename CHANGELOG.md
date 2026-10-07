@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.5.3 (2026-10-08)
+
+### Changed
+- The package description and the README's first line are PreReason's general line, "Financial market context for AI agents: macro, rates, bonds, FX, commodities, companies and Bitcoin.", in place of "Bitcoin and macro market briefings for AI agents: trend signals, regimes, liquidity and ETF flows." The desktop extension manifest's description opens "Financial market context for your assistant", with the same list.
+- The README lists six tools, with `get_changes` (a key on the Basic or Pro plan: what changed since your last call, change events after a cursor, no values), and the desktop extension manifest now lists it too, where it listed five. The bridge needed no change for it: it relays every tool the server lists.
+- The README names company briefings for listed companies in the US, Japan, Korea and India, one company per call, and counts 270 individual metrics.
+- `server.json` registry version 0.8.2, npm package 0.5.3. The 0.8.2 record was never published (the registry's latest was still 0.8.0 on 2026-10-06), so it names this release in place of 0.5.2.
+- The README and the desktop extension manifest count 32 live briefings. `commodities.oil-producers`, `commodities.gold-miners` and `commodities.grains-agribusiness` (Pro: a commodity beside the covered US companies tied to it, each company with its share price, its 1, 3 and 12 month changes beside the commodity's over the same windows and the measured 90 day correlation of its daily changes) went live on 2026-10-06.
+- The README and the desktop extension manifest counted 29 live briefings. `commodities.gold`, `commodities.silver`, `commodities.copper` and `commodities.wheat` (Basic: each commodity through its fund's share price and its own monthly average price from the World Bank's Pink Sheet, with the CFTC's futures positioning and what is said to move it) went live on 2026-10-06.
+- The README and the desktop extension manifest counted 25 live briefings. `eth.context` (Basic: Ether's price and 24 hour volume from CoinGecko, its distance from the 200 day average, Lido's stETH APR, the CFTC's CME Ether positioning and OKX's funding rate) went live on 2026-10-05.
+- The README and the desktop extension manifest count 24 live briefings. `bonds.context` (Basic) and `bonds.full` (Pro), who holds US Treasuries (foreign investors, primary dealers and speculators, each against its own history; the full one adds the Fed's own Treasury holdings, debt held by the public and the largest foreign holders), went live on 2026-10-03.
+- `macro.auctions` (Basic: Treasury auction demand, who bought at the latest auction of each note and bond maturity against that maturity's own prior 12 auctions, with the auctions announced and scheduled next) went live on 2026-10-03.
+- `commodities.energy-basket` (Pro: US oil and gas stocks against the five year norm from EIA's weekly reports, with WTI, Brent and Henry Hub spot prices, the Brent to WTI spread and WTI realised volatility) went live on 2026-10-03.
+- `cross.ai-compute` (Pro: US grid demand against a year earlier, the AI hosting agreements Bitcoin miners announced in SEC filings, and hosting against mining revenue per megawatt) went live on 2026-10-02. The bridge needed no change for it: `get_context` relays any briefing id the server accepts.
+
 ## 0.5.2 (2026-10-01)
 
 ### Changed

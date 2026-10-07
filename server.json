@@ -2,7 +2,7 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "com.prereason/mcp",
   "title": "PreReason",
-  "description": "Bitcoin and macro market briefings for AI agents: trend signals, regimes, liquidity and ETF flows.",
+  "description": "Financial market context for AI agents: macro, rates, bonds, FX, commodities, companies and Bitcoin.",
   "repository": {
     "url": "https://github.com/PreReason/mcp",
     "source": "github"
@@ -18,7 +18,7 @@
     {
       "registryType": "npm",
       "identifier": "@prereason/mcp",
-      "version": "0.5.2",
+      "version": "0.5.3",
       "transport": {
         "type": "stdio"
       },

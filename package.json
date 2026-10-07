@@ -1,9 +1,9 @@
 {
   "name": "@prereason/mcp",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "mcpName": "com.prereason/mcp",
   "type": "module",
-  "description": "Bitcoin and macro market briefings for AI agents: trend signals, regimes, liquidity and ETF flows.",
+  "description": "Financial market context for AI agents: macro, rates, bonds, FX, commodities, companies and Bitcoin.",
   "bin": {
     "prereason-mcp": "./bin/cli.js"
   },
