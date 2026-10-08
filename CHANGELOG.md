@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.5 (2026-10-08)
+
+### Changed
+- The README carries four pictures, kept in `assets/` (outside the npm package, which ships only `bin`, `lib` and the docs): a header, the PR mark lit over the names of the Treasury yields, currencies, commodities, macro series and companies PreReason serves; how an agent connects, with the calls and the one time key approval; a served `macro.rates` answer; and a served NVIDIA company answer. The README links them from this repository, so the npm page shows them too. The bridge is unchanged.
+- `server.json` registry version 0.8.2, npm package 0.5.5.
+
 ## 0.5.4 (2026-10-08)
 
 ### Changed

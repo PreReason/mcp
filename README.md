@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="https://raw.githubusercontent.com/PreReason/mcp/main/assets/header.png" alt="PreReason, financial market context for AI agents: the PR mark lit over the names of the Treasury yields, currencies, commodities, macro series and companies it serves" width="100%">
+
 # @prereason/mcp
 
 [![npm version](https://img.shields.io/npm/v/@prereason/mcp.svg)](https://www.npmjs.com/package/@prereason/mcp)
@@ -16,6 +18,8 @@ Financial market context for AI agents: macro, rates, bonds, FX, commodities, co
 </div>
 
 PreReason gives an AI agent market context it can reason with, in place of raw numbers. One call returns a briefing with the analysis already in it: a signal line, trend direction over several windows, confidence scores, percentile ranks and correlations, and in the deeper briefings a regime label and a plain language narrative. The briefings cover macro, bonds, FX, commodities, Bitcoin, Ethereum and cross asset correlations. Company briefings cover listed companies in US, Japan, Korea and India, one company per call. The catalogue holds 32 live briefings and 270 individual metrics, among them Treasury yields, the latest FOMC statement, Treasury auctions, who holds US Treasuries, the Fed balance sheet, M2, net liquidity, the dollar, US crude and gas inventories, gold, silver, copper and wheat, oil, mining and agribusiness companies beside their commodity, AI compute and power demand, Bitcoin price and momentum, Bitcoin network and miner health, spot Bitcoin ETF flows and corporate Bitcoin treasuries. It is served over MCP (a remote server and an npm bridge) and over REST, as Markdown or JSON. The catalogue tools need no key, and an agent can get a free key from inside the session: it shows one link, a person approves it, and the key arrives.
+
+<img src="https://raw.githubusercontent.com/PreReason/mcp/main/assets/how-it-connects.png" alt="How it connects: your agent (Claude, Cursor, Codex, VS Code) calls list_briefings, then get_context, through the npm bridge or the remote server at api.prereason.com/api/mcp; PreReason answers with the briefing, every figure dated and every source named. With no key yet, the first briefing call shows one approve link, and the key arrives in the bridge once a person clicks Approve." width="100%">
 
 ## Quick Start
 
@@ -96,6 +100,8 @@ Three ways, all free. The hosted server never hands out a key inside a session a
 
 ## 32 Market Briefings
 
+<img src="https://raw.githubusercontent.com/PreReason/mcp/main/assets/briefing.png" alt="An agent asks where Treasury yields are and what the Fed last decided; get_context with briefing macro.rates answers with the 30 year and 10 year Treasury yields, 10 year breakeven inflation and the Fed funds target range, each with its date and its context, from a served answer of 2026-10-08" width="100%">
+
 ### Free (6 briefings)
 | Briefing | Description |
 |----------|-------------|
@@ -143,6 +149,8 @@ Three ways, all free. The hosted server never hands out a key inside a session a
 ## Company Briefings
 
 `equities.company` reads one listed company per call, composed from its own reports (filings with its home market's regulator; for India, the results statement it publishes on its own website), each figure dated and sourced: US companies on Basic and above, Japanese, Korean and Indian companies on Pro and above. It describes; it never says what to do.
+
+<img src="https://raw.githubusercontent.com/PreReason/mcp/main/assets/company.png" alt="An agent asks what NVIDIA reported, how it ranks among its peers and what its guidance is; get_context with briefing equities.company and entity NVDA answers with quarterly revenue, operating margin, free cash flow and the company's own revenue guidance range, each with its date, its rank or its stored history, from NVIDIA's filings on SEC EDGAR" width="100%">
 
 - **Name the company** with `entity`: a US ticker or CIK (`NVDA`), a Japanese securities code (`7203`), a Korean stock code (`005930`) or an Indian company's ISIN (`INE018A01030`).
 - **Not sure of the code?** Call `list_briefings` with `search`, for example `"Toyota earnings"`: the answer lists the matching covered companies, each with the `entity` to pass.
