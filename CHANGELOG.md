@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.9 (2026-10-08)
+
+### Changed
+- The README names the company market "USA", not "US", as every PreReason surface now does (the owner, 2026-10-08: "its USA everywhere"): listed companies in the USA, Japan, Korea and India; USA companies on Basic and above; a USA ticker or CIK; the covered USA producers, miners and grain companies; against guidance for USA companies only; segments for the USA and Japan. "US" that is not the company market (the US Treasury's curve, US Treasuries, US grid demand, US oil and gas stocks, US soft red winter wheat) is unchanged. The README is the only change; the bridge relays the server's tool descriptions.
+- `server.json` registry version 0.8.2, npm package 0.5.9.
+
 ## 0.5.8 (2026-10-08)
 
 ### Changed

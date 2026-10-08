@@ -18,7 +18,7 @@
     {
       "registryType": "npm",
       "identifier": "@prereason/mcp",
-      "version": "0.5.8",
+      "version": "0.5.9",
       "transport": {
         "type": "stdio"
       },
