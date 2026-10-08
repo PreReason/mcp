@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.4 (2026-10-08)
+
+### Changed
+- The README names the company briefing's 11 parts and what each holds, how `get_context` reads one with `block` (a part counts one call; the whole briefing counts one for each part it carries), and how `list_briefings` with `search` names covered companies, each with the `entity` to pass. Both are server changes of 2026-10-08, and the bridge relays them unchanged.
+- `server.json` registry version 0.8.2, npm package 0.5.4.
+
 ## 0.5.3 (2026-10-08)
 
 ### Changed

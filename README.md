@@ -87,10 +87,10 @@ Three ways, all free. The hosted server never hands out a key inside a session a
 
 | Tool | Auth | Description |
 |------|------|-------------|
-| `list_briefings` | Open | List all 32 pre-reasoned market briefings with tier requirements |
+| `list_briefings` | Open | List all 32 pre-reasoned market briefings with tier requirements; with `search`, only those that match a question, and the covered companies it names, each with the `entity` to pass |
 | `list_metrics` | Open | List every available metric across the bitcoin, macro, calculated and eth categories |
 | `get_health` | Open | API health check, version, account tier |
-| `get_context` | Required | Fetch a pre-reasoned market briefing (markdown or JSON) |
+| `get_context` | Required | Fetch a pre-reasoned market briefing (markdown or JSON); for a company briefing, `entity` names the company and `block` reads one of its 11 parts (see Company Briefings) |
 | `get_metric` | Required | Fetch a single metric with trend/signal/percentile |
 | `get_changes` | Required (Basic and above) | What changed since your last call: change events after a cursor, no values |
 
@@ -139,6 +139,33 @@ Three ways, all free. The hosted server never hands out a key inside a session a
 | `commodities.oil-producers` | Crude oil beside its covered US producers: the energy basket's state, WTI and Brent spot prices from EIA, then each integrated major, producer and refiner and two oil field service companies, with its share price, its 1, 3 and 12 month changes beside WTI and the measured 90 day correlation with WTI |
 | `commodities.gold-miners` | The gold fund (GLD, a share price, not the gold price) and gold's own monthly price from the World Bank beside the covered US gold and silver miners and royalty and streaming companies, each with its share price, its 1, 3 and 12 month changes beside GLD and the measured 90 day correlation with GLD |
 | `commodities.grains-agribusiness` | The wheat futures fund (WEAT, not the wheat price) and US soft red winter wheat's own monthly price from the World Bank beside the covered US grain merchandisers and processors, seed and crop nutrient companies, farm equipment makers and farmland REITs, each with its share price, its 1, 3 and 12 month changes beside WEAT and the measured 90 day correlation with WEAT |
+
+## Company Briefings
+
+`equities.company` reads one listed company per call, composed from its own reports (filings with its home market's regulator; for India, the results statement it publishes on its own website), each figure dated and sourced: US companies on Basic and above, Japanese, Korean and Indian companies on Pro and above. It describes; it never says what to do.
+
+- **Name the company** with `entity`: a US ticker or CIK (`NVDA`), a Japanese securities code (`7203`), a Korean stock code (`005930`) or an Indian company's ISIN (`INE018A01030`).
+- **Not sure of the code?** Call `list_briefings` with `search`, for example `"Toyota earnings"`: the answer lists the matching covered companies, each with the `entity` to pass.
+- **Read one part** with `block`, one of the 11 below, or leave it out for the whole briefing. A part counts one call; the whole briefing counts one for each part it carries. Parts are served for today only.
+
+```
+get_context(briefing="equities.company", entity="7203")
+get_context(briefing="equities.company", entity="NVDA", block="valuation")
+```
+
+| Part (`block`) | What it holds |
+|----------------|---------------|
+| `header` | Who the company is, the indexes that hold it with their dates, and a line on its peers |
+| `what_changed` | Its recent filings |
+| `situations` | Flagged conditions, each with its severity |
+| `against_guidance` | The company's own stated expectations next to what it reported (US companies only) |
+| `numbers` | Income statement, balance sheet and cash flow history, with growth and the company's own history |
+| `segments` | Business, product and geography splits (US and Japan) |
+| `valuation` | The close, market capitalisation, price to earnings, book and sales, enterprise value multiples and free cash flow yield, each with its value a year ago and its own history (closes from StockAnalysis.com) |
+| `capital_structure` | Debt, liquidity and maturities |
+| `quality` | Earnings quality and liquidity, including the accrual ratio, cash conversion, current, quick and cash ratios, working capital, asset turnover, and days sales, inventory and payables outstanding |
+| `profitability` | Returns and cash generation, including free cash flow, its margin and per share, EBITDA, return on equity, assets and invested capital, the payout ratio and the effective tax rate |
+| `news` | Filed news |
 
 ## Example Prompts
 
