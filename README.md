@@ -11,11 +11,26 @@
 [![Glama Score](https://glama.ai/mcp/servers/PreReason/mcp/badges/score.svg)](https://glama.ai/mcp/servers/PreReason/mcp)
 [![Smithery](https://img.shields.io/badge/Smithery-listed-7c3aed)](https://smithery.ai/servers/prereason/briefings)
 
-**MCP server for [PreReason](https://www.prereason.com).**
+**Let your agent [prereason](https://www.prereason.com) before it answers.**
 
 Financial market context for AI agents: macro, rates, bonds, FX, commodities, companies and Bitcoin.
 
 </div>
+
+Ask your agent where Treasury yields are. On its own, it reaches for a search result or a raw series and works out the rest by itself. When it prereasons, one `get_context` call brings back the context already worked out: the 30 year yield at 5.67% on 2026-10-07, the highest reading on the US Treasury's daily par yield curve since July 2001.
+
+<img src="https://raw.githubusercontent.com/PreReason/mcp/main/assets/briefing.png" alt="An agent asks where Treasury yields are and what the Fed last decided; get_context with briefing macro.rates answers with the 30 year and 10 year Treasury yields, 10 year breakeven inflation and the Fed funds target range, each with its date and its context, from a served answer of 2026-10-08" width="100%">
+
+## Why prereason?
+
+- **Context, not raw numbers.** Each briefing arrives with the reading done: the trend over several windows, where a value sits in its own history, a company's rank among its peers and, where read, its own guidance.
+- **Every figure dated, every source named.** Your agent can say when a number is from and where it came from.
+- **One call, a whole briefing.** A briefing gathers the series a question needs, so your agent spends its turns on the answer rather than on lookups.
+- **The markets in one place.** Rates and Treasuries, the Fed, FX, commodities, macro, listed companies in the US, Japan, Korea and India, and Bitcoin.
+- **It describes; it never advises.** Briefings say what the data shows. They never say what to buy, sell or hold.
+- **Quick to set up.** One block of config for Claude, Cursor, Codex or VS Code, through the npm bridge or the remote server. The catalogue tools need no key; for the rest, the session gives you one link to approve in your browser, and the key arrives in the running session.
+
+## What it covers
 
 PreReason gives an AI agent market context it can reason with, in place of raw numbers. One call returns a briefing with the analysis already in it: a signal line, trend direction over several windows, confidence scores, percentile ranks and correlations, and in the deeper briefings a regime label and a plain language narrative. The briefings cover macro, bonds, FX, commodities, Bitcoin, Ethereum and cross asset correlations. Company briefings cover listed companies in US, Japan, Korea and India, one company per call. The catalogue holds 32 live briefings and 270 individual metrics, among them Treasury yields, the latest FOMC statement, Treasury auctions, who holds US Treasuries, the Fed balance sheet, M2, net liquidity, the dollar, US crude and gas inventories, gold, silver, copper and wheat, oil, mining and agribusiness companies beside their commodity, AI compute and power demand, Bitcoin price and momentum, Bitcoin network and miner health, spot Bitcoin ETF flows and corporate Bitcoin treasuries. It is served over MCP (a remote server and an npm bridge) and over REST, as Markdown or JSON. The catalogue tools need no key, and an agent can get a free key from inside the session: it shows one link, a person approves it, and the key arrives.
 
@@ -99,8 +114,6 @@ Three ways, all free. The hosted server never hands out a key inside a session a
 | `get_changes` | Required (Basic and above) | What changed since your last call: change events after a cursor, no values |
 
 ## 32 Market Briefings
-
-<img src="https://raw.githubusercontent.com/PreReason/mcp/main/assets/briefing.png" alt="An agent asks where Treasury yields are and what the Fed last decided; get_context with briefing macro.rates answers with the 30 year and 10 year Treasury yields, 10 year breakeven inflation and the Fed funds target range, each with its date and its context, from a served answer of 2026-10-08" width="100%">
 
 ### Free (6 briefings)
 | Briefing | Description |

@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.5.6 (2026-10-08)
+
+### Changed
+- The README opens with what an agent gets: one line ("Let your agent prereason before it answers."), a served Treasuries answer as the example, then "Why prereason?" in six points, before the full description and Quick Start. The served `macro.rates` picture moves up into that opening.
+- The four pictures are opaque to their square edges, with no border line and no rounded corner, so no light edge shows on GitHub's dark page or on a white one.
+- `server.json` registry version 0.8.2, npm package 0.5.6.
+
 ## 0.5.5 (2026-10-08)
 
 ### Changed
