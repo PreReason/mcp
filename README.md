@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/PreReason/mcp/main/assets/header.png" alt="PreReason, financial market context for AI agents: the PR mark lit over the names of the Treasury yields, currencies, commodities, macro series and companies it serves" width="100%">
+<img src="https://raw.githubusercontent.com/PreReason/mcp/main/assets/header.png" alt="PreReason, market context reasoned in advance: the PR mark lit over the names of the Treasury yields, currencies, commodities, macro series and companies it serves" width="100%">
 
 # @prereason/mcp
 
@@ -11,13 +11,15 @@
 [![Glama Score](https://glama.ai/mcp/servers/PreReason/mcp/badges/score.svg)](https://glama.ai/mcp/servers/PreReason/mcp)
 [![Smithery](https://img.shields.io/badge/Smithery-listed-7c3aed)](https://smithery.ai/servers/prereason/briefings)
 
-**Let your agent [prereason](https://www.prereason.com) before it answers.**
+**[Prereason](https://www.prereason.com) first. Then answer.**
 
 Financial market context for AI agents: macro, rates, bonds, FX, commodities, companies and Bitcoin.
 
+[Docs](https://www.prereason.com/docs#mcp-integration) · [Briefings](https://www.prereason.com/briefings) · [Company briefings](https://www.prereason.com/docs/company-briefings) · [Pricing](https://www.prereason.com/pricing) · [Get a key](https://www.prereason.com/signup)
+
 </div>
 
-Ask your agent where Treasury yields are. On its own, it reaches for a search result or a raw series and works out the rest by itself. When it prereasons, one `get_context` call brings back the context already worked out: the 30 year yield at 5.67% on 2026-10-07, the highest reading on the US Treasury's daily par yield curve since July 2001.
+Ask your AI where Treasury yields are. On its own, it reaches for a search result or a raw series and works out the rest by itself. When it prereasons, one `get_context` call brings back the context already worked out: the 30 year yield at 5.67% on 2026-10-07, the highest reading on the US Treasury's daily par yield curve since July 2001.
 
 <img src="https://raw.githubusercontent.com/PreReason/mcp/main/assets/briefing.png" alt="An agent asks where Treasury yields are and what the Fed last decided; get_context with briefing macro.rates answers with the 30 year and 10 year Treasury yields, 10 year breakeven inflation and the Fed funds target range, each with its date and its context, from a served answer of 2026-10-08" width="100%">
 
@@ -25,7 +27,7 @@ Ask your agent where Treasury yields are. On its own, it reaches for a search re
 
 - **Context, not raw numbers.** Each briefing arrives with the reading done: the trend over several windows, where a value sits in its own history, a company's rank among its peers and, where read, its own guidance.
 - **Every figure dated, every source named.** Your agent can say when a number is from and where it came from.
-- **One call, a whole briefing.** A briefing gathers the series a question needs, so your agent spends its turns on the answer rather than on lookups.
+- **One call, a whole briefing.** A briefing gathers the series a question needs, so the turns go to the answer rather than to lookups.
 - **The markets in one place.** Rates and Treasuries, the Fed, FX, commodities, macro, listed companies in the US, Japan, Korea and India, and Bitcoin.
 - **It describes; it never advises.** Briefings say what the data shows. They never say what to buy, sell or hold.
 - **Quick to set up.** One block of config for Claude, Cursor, Codex or VS Code, through the npm bridge or the remote server. The catalogue tools need no key; for the rest, the session gives you one link to approve in your browser, and the key arrives in the running session.
@@ -282,7 +284,7 @@ It used to depend on `@modelcontextprotocol/sdk` for two classes, a stdio transp
 
 ## Links
 
-- [Documentation](https://www.prereason.com/docs#mcp)
+- [Documentation](https://www.prereason.com/docs#mcp-integration)
 - [Sign Up](https://www.prereason.com/signup)
 - [API Discovery](https://www.prereason.com/.well-known/mcp/server.json)
 - [Terms of Service](https://www.prereason.com/terms)

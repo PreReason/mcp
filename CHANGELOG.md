@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.5.8 (2026-10-08)
+
+### Changed
+- The README's opening spaces out the word "agent": the tagline is "Prereason first. Then answer.", the example asks "your AI", "agent" stays in PreReason's one line and in one point of "Why prereason?", and the header picture's line reads "Market context, reasoned in advance." in place of repeating the one line.
+- A row of links under the one line: Docs, Briefings, Company briefings, Pricing and Get a key. The Links section's Documentation link now opens the MCP section (`#mcp-integration`; the page has no `#mcp`).
+- `server.json` registry version 0.8.2, npm package 0.5.8.
+
 ## 0.5.7 (2026-10-08)
 
 ### Changed
