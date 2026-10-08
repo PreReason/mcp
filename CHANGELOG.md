@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.7 (2026-10-08)
+
+### Changed
+- The text in the README's four pictures is a step brighter at every level (headings near white, the small grey lines lifted most), so it reads at the size GitHub and npm show the pictures.
+- `server.json` registry version 0.8.2, npm package 0.5.7.
+
 ## 0.5.6 (2026-10-08)
 
 ### Changed

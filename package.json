@@ -1,6 +1,6 @@
 {
   "name": "@prereason/mcp",
-  "version": "0.5.6",
+  "version": "0.5.7",
   "mcpName": "com.prereason/mcp",
   "type": "module",
   "description": "Financial market context for AI agents: macro, rates, bonds, FX, commodities, companies and Bitcoin.",
