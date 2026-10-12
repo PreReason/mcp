@@ -9,7 +9,9 @@
  *   PREREASON_API_KEY in the environment
  *   --header "Authorization:Bearer pr_live_..."
  *   the credentials file (~/.prereason/credentials.json, or PREREASON_CREDENTIALS_FILE)
- *   no key: the bridge asks for access. It prints one link, the person opens it and
+ *   no key: the bridge asks for access when it is needed, that is when the person
+ *   asks the assistant to connect (the bridge's own connect_account tool) or an
+ *   answer needs a key. The answer carries one link, the person opens it and
  *   approves, and the key arrives here and is saved. Free tools work meanwhile.
  *
  * Usage:
@@ -30,12 +32,22 @@ import { platform } from 'node:os';
 import { StdioServerTransport } from '../lib/stdio.js';
 import { StreamableHttpClientTransport } from '../lib/streamable-http.js';
 import { credentialsPath, deleteCredentials, parseArgs, resolveApiKey } from '../lib/credentials.js';
-import { decorateForClaimState, runClaimFlow } from '../lib/claim.js';
+import { runClaimFlow } from '../lib/claim.js';
+import {
+  CONNECT_TOOL_NAME,
+  Connection,
+  isAuthRequired,
+  isKeyRefusal,
+  readHealth,
+  toolResult,
+  withConnectInstructions,
+  withConnectTool,
+} from '../lib/connect.js';
 import { failureResponse } from '../lib/jsonrpc.js';
 
 // Keep in sync with package.json on each release
 const PKG_NAME = '@prereason/mcp';
-const PKG_VERSION = '0.5.9';
+const PKG_VERSION = '0.6.0';
 const DEFAULT_URL = 'https://api.prereason.com/api/mcp';
 const USER_AGENT = `prereason-mcp/${PKG_VERSION} node/${process.versions.node} (${platform()})`;
 
@@ -116,28 +128,109 @@ if (args.login) {
 const stdio = new StdioServerTransport();
 const http = new StreamableHttpClientTransport(url, { requestInit: { headers } });
 
+const toHost = (frame) =>
+  stdio.send(frame).catch((e) => {
+    process.stderr.write(`[prereason:recv] ${e.message}\n`);
+  });
+
 /**
- * What AUTH_REQUIRED tool results carry: the approve link while a claim is
- * pending, or the key limit notice once a claim ended there.
+ * Requests the bridge sends on its own behalf (connect_account confirms a key
+ * with get_health), answered here and never shown to the host. Their ids are
+ * strings with this prefix, which no host request is told to use.
  */
-const pending = { approveUrl: null, claimCode: null, notice: null };
+const INTERNAL_ID = 'prereason-bridge-';
+const internal = new Map();
+let internalSeq = 0;
+
+function askServer(method, params, timeoutMs = 10_000) {
+  const id = `${INTERNAL_ID}${++internalSeq}`;
+  return new Promise((resolve, reject) => {
+    const timer = setTimeout(() => {
+      internal.delete(id);
+      reject(new Error('no answer within 10 s'));
+    }, timeoutMs);
+    internal.set(id, (frame) => {
+      clearTimeout(timer);
+      resolve(frame);
+    });
+    http.send({ jsonrpc: '2.0', id, method, params }).catch((e) => {
+      clearTimeout(timer);
+      internal.delete(id);
+      reject(e);
+    });
+  });
+}
+
+/**
+ * The account this bridge reads with: the key it holds, and the claim it runs
+ * when it holds none. The claim starts when it is needed, not at start up.
+ */
+const connection = new Connection({
+  ...claimContext,
+  source: resolved.source,
+  env: process.env,
+  argHeaders: args.headers,
+  verify: async () => readHealth(await askServer('tools/call', { name: 'get_health', arguments: {} })),
+});
+
+/** Host requests whose answers the bridge adds to: initialize (the sentence) and the first tools/list page (the tool). */
+const decorate = new Map();
+
+/** Send to PreReason; a key the server refuses is set aside and the request sent once more without it. */
+async function relay(msg) {
+  try {
+    await http.send(msg);
+  } catch (e) {
+    if (isKeyRefusal(e) && connection.hasKey()) {
+      connection.keyRefused();
+      await http.send(msg);
+      return;
+    }
+    throw e;
+  }
+}
 
 stdio.onmessage = (msg) => {
-  http.send(msg).catch((e) => {
+  if (msg && msg.method === 'tools/call' && msg.params?.name === CONNECT_TOOL_NAME && msg.id !== undefined) {
+    connection
+      .connect()
+      .then(({ text, isError }) => toHost(toolResult(msg.id, text, isError)))
+      .catch((e) => toHost(toolResult(msg.id, `PreReason could not finish connecting: ${e.message}. Call connect_account again.`, true)));
+    return;
+  }
+  if (msg && msg.id !== undefined && msg.method === 'initialize') decorate.set(msg.id, withConnectInstructions);
+  if (msg && msg.id !== undefined && msg.method === 'tools/list' && !msg.params?.cursor) decorate.set(msg.id, withConnectTool);
+
+  relay(msg).catch((e) => {
     process.stderr.write(`[prereason:send] ${e.message}\n`);
     // Never leave the host waiting on an id that will not come back: a
     // request the relay could not deliver gets an error answer of its own.
+    decorate.delete(msg?.id);
     const answer = failureResponse(msg, e);
-    if (answer) {
-      stdio.send(answer).catch((err) => {
-        process.stderr.write(`[prereason:recv] ${err.message}\n`);
-      });
-    }
+    if (answer) toHost(answer);
   });
 };
 
+async function fromServer(msg) {
+  if (msg && typeof msg.id === 'string' && internal.has(msg.id)) {
+    const settle = internal.get(msg.id);
+    internal.delete(msg.id);
+    settle(msg);
+    return;
+  }
+  let frame = msg;
+  const add = msg && msg.id !== undefined ? decorate.get(msg.id) : undefined;
+  if (add) {
+    decorate.delete(msg.id);
+    frame = add(frame);
+  }
+  // An answer that needs a key asks for one now, so it can carry the link.
+  if (isAuthRequired(frame) && !connection.hasKey()) await connection.ensureClaim();
+  await toHost(connection.decorate(frame));
+}
+
 http.onmessage = (msg) => {
-  stdio.send(decorateForClaimState(msg, pending)).catch((e) => {
+  fromServer(msg).catch((e) => {
     process.stderr.write(`[prereason:recv] ${e.message}\n`);
   });
 };
@@ -161,9 +254,7 @@ await http.start();
 await stdio.start();
 
 if (!resolved.key) {
-  // Fire and forget: the flow logs its own lines and attaches the key to
-  // `headers` when the person approves, which the transport reads per request.
-  runClaimFlow({ ...claimContext, state: pending }).catch((e) => {
-    process.stderr.write(`[prereason:claim] ${e.message}\n`);
-  });
+  process.stderr.write(
+    'PreReason: no API key yet. The free tools work now; ask the assistant to connect PreReason (connect_account), or ask for any briefing, and it shows one link to approve.\n'
+  );
 }

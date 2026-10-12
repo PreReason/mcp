@@ -5,6 +5,9 @@ import { spawn } from 'node:child_process';
 import { once } from 'node:events';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
+import { mkdtempSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { CONNECT_INSTRUCTIONS, CONNECT_TOOL_NAME } from '../lib/connect.js';
 
 const CLI = join(dirname(fileURLToPath(import.meta.url)), '..', 'bin', 'cli.js');
 const KEY = `pr_test_${'k'.repeat(32)}`;
@@ -15,9 +18,33 @@ const KEY = `pr_test_${'k'.repeat(32)}`;
  * It records every request so the test can assert on the headers the bridge
  * put on the wire.
  */
-async function stubServer({ refuse } = {}) {
+async function stubServer({ refuse, answer } = {}) {
   const seen = [];
   const server = createServer((req, res) => {
+    // The claims endpoint on the same origin (lib/claim.js claimEndpoint).
+    if (req.url.startsWith('/api/agent/claims')) {
+      seen.push({ method: req.method, url: req.url, headers: req.headers });
+      req.resume();
+      const code = 'PR-STUB-2345';
+      const origin = `http://127.0.0.1:${server.address().port}`;
+      if (req.method === 'POST') {
+        res.writeHead(201, { 'content-type': 'application/json' });
+        res.end(
+          JSON.stringify({
+            claim_code: code,
+            claim_token: `prc_${'s'.repeat(43)}`,
+            status: 'pending',
+            approve_url: `${origin}/claim/${code}`,
+            expires_at: new Date(Date.now() + 15 * 60_000).toISOString(),
+            poll: { url: `${origin}/api/agent/claims/${code}`, interval_seconds: 5 },
+          })
+        );
+      } else {
+        res.writeHead(200, { 'content-type': 'application/json' });
+        res.end(JSON.stringify({ status: 'pending', poll_interval: 5 }));
+      }
+      return;
+    }
     if (req.method === 'GET') {
       seen.push({ method: 'GET', headers: req.headers });
       res.writeHead(405, { allow: 'POST', 'content-type': 'application/json' });
@@ -43,7 +70,7 @@ async function stubServer({ refuse } = {}) {
         return;
       }
       res.writeHead(200, { 'content-type': 'application/json; charset=utf-8' });
-      res.end(JSON.stringify({ jsonrpc: '2.0', id: frame.id, result: { echoed: frame.method } }));
+      res.end(JSON.stringify({ jsonrpc: '2.0', id: frame.id, result: answer?.(frame, req) ?? { echoed: frame.method } }));
     });
   });
 
@@ -54,9 +81,9 @@ async function stubServer({ refuse } = {}) {
 }
 
 /** Spawn the bridge and read its stdout as newline delimited frames. */
-function spawnBridge(url) {
+function spawnBridge(url, env = {}) {
   const child = spawn(process.execPath, [CLI], {
-    env: { ...process.env, PREREASON_URL: url, PREREASON_API_KEY: KEY, PREREASON_CLIENT: 'node-test' },
+    env: { ...process.env, PREREASON_URL: url, PREREASON_API_KEY: KEY, PREREASON_CLIENT: 'node-test', ...env },
     stdio: ['pipe', 'pipe', 'pipe'],
   });
 
@@ -105,7 +132,8 @@ test('the bridge relays stdio to Streamable HTTP and back, with the configured h
   });
 
   bridge.send({ jsonrpc: '2.0', id: 1, method: 'initialize', params: { protocolVersion: '2025-06-18', capabilities: {}, clientInfo: { name: 'node-test', version: '0' } } });
-  assert.deepEqual(await bridge.nextFrame(), { jsonrpc: '2.0', id: 1, result: { echoed: 'initialize' } });
+  // The server's answer, with the bridge's one sentence about connect_account (0.6.0).
+  assert.deepEqual(await bridge.nextFrame(), { jsonrpc: '2.0', id: 1, result: { echoed: 'initialize', instructions: CONNECT_INSTRUCTIONS } });
 
   const [first] = stub.seen;
   assert.equal(first.headers.authorization, `Bearer ${KEY}`);
@@ -192,4 +220,107 @@ test('a request answered with an error page still gets an answer the host can re
     id: 5,
     error: { code: -32000, message: 'The PreReason bridge could not relay this request: HTTP 502.' },
   });
+});
+
+/** A bridge with no key: no PREREASON_API_KEY and an empty credentials file path of its own. */
+function spawnKeyless(url) {
+  const dir = mkdtempSync(join(tmpdir(), 'prereason-bridge-'));
+  return spawnBridge(url, { PREREASON_API_KEY: '', PREREASON_CREDENTIALS_FILE: join(dir, 'credentials.json') });
+}
+
+/** The server's answers for a keyless session: its tools, and AUTH_REQUIRED for a read that needs a key. */
+function keylessAnswers(frame, req) {
+  if (frame.method === 'tools/list') return { tools: [{ name: 'list_briefings' }, { name: 'get_context' }] };
+  if (frame.method === 'tools/call' && !req.headers.authorization) {
+    return { isError: true, content: [{ type: 'text', text: JSON.stringify({ error: 'AUTH_REQUIRED', message: 'Reading a briefing needs an API key.' }) }] };
+  }
+  return undefined;
+}
+
+const claimPosts = (stub) => stub.seen.filter((r) => r.url?.startsWith('/api/agent/claims') && r.method === 'POST').length;
+
+test('0.6.0: with no key the bridge asks for nothing at start, lists connect_account last, and the first answer that needs a key carries the link', async (t) => {
+  const stub = await stubServer({ answer: keylessAnswers });
+  const bridge = spawnKeyless(stub.url);
+  t.after(() => {
+    bridge.child.kill();
+    stub.close();
+  });
+
+  bridge.send({ jsonrpc: '2.0', id: 1, method: 'tools/list' });
+  const list = await bridge.nextFrame();
+  assert.deepEqual(list.result.tools.map((tool) => tool.name), ['list_briefings', 'get_context', CONNECT_TOOL_NAME]);
+  assert.equal(claimPosts(stub), 0, 'no claim before one is needed');
+
+  bridge.send(TOOL_CALL(2));
+  const answer = await bridge.nextFrame();
+  assert.equal(answer.id, 2);
+  assert.match(answer.result.content[0].text, /^Approve at http:\/\/127\.0\.0\.1:\d+\/claim\/PR-STUB-2345 /);
+  assert.equal(claimPosts(stub), 1);
+});
+
+test('0.6.0: connect_account is answered by the bridge itself, with the link, and never reaches the server', async (t) => {
+  const stub = await stubServer({ answer: keylessAnswers });
+  const bridge = spawnKeyless(stub.url);
+  t.after(() => {
+    bridge.child.kill();
+    stub.close();
+  });
+
+  bridge.send({ jsonrpc: '2.0', id: 3, method: 'tools/call', params: { name: CONNECT_TOOL_NAME, arguments: {} } });
+  const answer = await bridge.nextFrame();
+  assert.equal(answer.id, 3);
+  assert.equal(answer.result.isError, undefined);
+  assert.match(answer.result.content[0].text, /^Not connected yet\. Ask the user to open this link: http:\/\/127\.0\.0\.1:\d+\/claim\/PR-STUB-2345\n/);
+  assert.doesNotMatch(answer.result.content[0].text, /pr_(?:live|test)_/);
+  assert.equal(stub.seen.filter((r) => r.frame?.params?.name === CONNECT_TOOL_NAME).length, 0, 'the server never sees the tool');
+  assert.equal(claimPosts(stub), 1);
+});
+
+test('0.6.0: a key the server refuses is set aside and the request is sent again without it, so the host still gets its answer', async (t) => {
+  // Refuses the key itself the way the auth middleware does on /api/mcp: 401,
+  // INVALID_API_KEY, not JSON-RPC, for every request that carries it.
+  const seen = [];
+  const keyed = createServer((req, res) => {
+    const chunks = [];
+    req.on('data', (c) => chunks.push(c));
+    req.on('end', () => {
+      if (req.method !== 'POST') {
+        res.writeHead(405).end();
+        return;
+      }
+      const frame = JSON.parse(Buffer.concat(chunks).toString('utf8'));
+      seen.push({ authorization: req.headers.authorization ?? null, frame });
+      if (req.headers.authorization) {
+        res.writeHead(401, { 'content-type': 'application/json' });
+        res.end(JSON.stringify({ error: 'INVALID_API_KEY', message: 'Invalid API key' }));
+        return;
+      }
+      res.writeHead(200, { 'content-type': 'application/json' });
+      res.end(JSON.stringify({ jsonrpc: '2.0', id: frame.id, result: { echoed: frame.method } }));
+    });
+  });
+  keyed.listen(0, '127.0.0.1');
+  await once(keyed, 'listening');
+  const dir = mkdtempSync(join(tmpdir(), 'prereason-bridge-'));
+  const bridge = spawnBridge(`http://127.0.0.1:${keyed.address().port}/api/mcp`, { PREREASON_CREDENTIALS_FILE: join(dir, 'credentials.json') });
+  t.after(() => {
+    bridge.child.kill();
+    keyed.close();
+  });
+
+  bridge.send({ jsonrpc: '2.0', id: 1, method: 'initialize', params: { protocolVersion: '2025-06-18', capabilities: {}, clientInfo: { name: 'node-test', version: '0' } } });
+  const answer = await bridge.nextFrame();
+  assert.equal(answer.id, 1);
+  assert.equal(answer.result.echoed, 'initialize');
+  assert.deepEqual(
+    seen.map((r) => r.authorization),
+    [`Bearer ${KEY}`, null],
+    'sent once with the key, refused, then once without it'
+  );
+  bridge.send({ jsonrpc: '2.0', id: 2, method: 'ping' });
+  await bridge.nextFrame();
+  assert.equal(seen.at(-1).authorization, null, 'the refused key is not sent again');
+  assert.match(bridge.stderr(), /the key from PREREASON_API_KEY was refused/);
+  assert.doesNotMatch(bridge.stderr(), new RegExp(KEY));
 });

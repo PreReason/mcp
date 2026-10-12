@@ -2,9 +2,9 @@
   "manifest_version": "0.3",
   "name": "prereason",
   "display_name": "PreReason",
-  "version": "0.5.9",
+  "version": "0.6.0",
   "description": "Financial market context for your assistant: macro, rates, bonds, FX, commodities, companies and Bitcoin. Needs no key to start; approve one link and the key arrives on its own.",
-  "long_description": "PreReason returns market context an assistant can reason with instead of raw numbers: 32 briefings across macro, bonds, FX, commodities, Bitcoin, Ethereum and cross asset correlations, each with trend signals and confidence scores (the deeper ones add regime classification), plus 270 individual metrics with interpretation, and company briefings, one listed company each. The three catalogue tools work without an account. When a briefing needs a key, the extension asks for access from inside the conversation: you open one link, sign in or create a free account, click Approve, and the key is saved on this computer, attached to your account. Nothing is created without that approval.",
+  "long_description": "PreReason returns market context an assistant can reason with instead of raw numbers: 33 briefings across macro, bonds, FX, commodities, Bitcoin, Ethereum and cross asset correlations, each with trend signals and confidence scores (the deeper ones add regime classification), plus 293 individual metrics with interpretation, and company briefings, one listed company each. The three catalogue tools work without an account. To connect, ask Claude to connect your PreReason account, or simply ask for a briefing: Claude shows one link, you sign in or create a free account and click Approve, and the key is saved on this computer, attached to your account, without ever being shown. Nothing is created without that approval.",
   "author": {
     "name": "PreReason",
     "url": "https://www.prereason.com"
@@ -40,7 +40,9 @@
     { "name": "get_health", "description": "API status and version" },
     { "name": "get_context", "description": "A pre-reasoned market briefing (markdown or JSON)" },
     { "name": "get_metric", "description": "One metric with signal, trend and percentile" },
-    { "name": "get_changes", "description": "What changed since your last call: briefing state labels, releases and the companies you name" }
+    { "name": "get_changes", "description": "What changed since your last call: briefing state labels, releases and the companies you name" },
+    { "name": "get_news", "description": "Dated records of what companies filed and what federal agencies and the Federal Reserve published, each with a link" },
+    { "name": "connect_account", "description": "Connect your PreReason account: one link to approve, and no key is ever shown" }
   ],
   "tools_generated": false,
   "keywords": ["bitcoin", "macro", "market briefings", "liquidity", "finance", "regime", "context"],

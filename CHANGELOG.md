@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.6.0 (2026-10-12)
+
+### Added
+- `connect_account`, a tool of the bridge's own. A person can now tell their assistant "connect me to PreReason, I have an account" and be connected without ever seeing a key: with no key yet the tool returns the one link to approve (sign in or create a free account, click Approve), and once the key has arrived it says the account is connected and names its plan, read from `get_health` with that key. The bridge answers it itself and lists it after the server's tools; the remote server does not offer it, so every other client sees the same tools as before. The bridge also adds one sentence naming it to the server's instructions on `initialize`.
+
+### Changed
+- The bridge asks PreReason for access when it is needed, that is when the person asks to connect or an answer needs a key, and no longer when the app starts. Until now the claim began when Claude Desktop opened and its link lived 15 minutes, so someone who asked a question later got "authentication required" with no link at all until Claude was restarted; and every start used one of the five claims an hour PreReason allows one address, so a few restarts, or an office on one address, could leave no link at all. A link that lapses is now asked for again on the next need, with no restart. After the person declines on the approval page, or once the account is at its key limit, an answer that needs a key says so and asks nothing; asking to connect again makes a new link.
+- `connect_account` looks at a pending link at once, so an approval made a moment ago is seen without waiting for the next poll.
+- The README's example prompts open with connecting and with general market questions; Bitcoin is one of them, not the first.
+- The README and the desktop extension manifest count 33 live briefings. `macro.calendar` (Basic: the scheduled dates ahead of the main US releases, the FOMC's and the ECB's decisions, the FOMC minutes and the Treasury coupon auctions ahead (the week's, or the next one), each from its publisher's own calendar, beside the latest US jobs report, CPI and weekly jobless claims as published) went live on 2026-10-10, and the catalogue paragraph names the macro release calendar. The README and the manifest count 293 metrics: `eu-cpi` (Eurostat's HICP for the euro area of 19 countries, a fixed composition) joined the list the same day, three series the bonds state blocks print (`nyfed-primary-dealer-treasury-net`, `nyfed-soma-treasuries`, `us-debt-public-held`), fourteen the auction, liquidity and AI compute state blocks print (the seven `auction-dealer-share` maturities, `nyfed-srf-daily` and six EIA-930 grid series), and four of the Federal Reserve Board's H.10 exchange rates (`krw-usd`, `inr-usd`, `gbp-usd` and `chf-usd`).
+- `server.json` registry version 0.8.2, npm package 0.6.0.
+
+### Fixed
+- A saved key the server refuses (revoked under Settings, say) no longer breaks the bridge. PreReason answers such a key with 401 INVALID_API_KEY on every request, `initialize` included, so the app showed the server as failed and nothing inside the conversation could fix it. The bridge now sets that key aside for the session, tries the next source in the documented order, sends the request again, and lets the person connect again. The credentials file is kept: one session's refusal never deletes it, and a new approval replaces it.
+- `test/` gains `connect.test.js` (17 cases) and three end to end cases in `bridge.test.js`; the suite is 103.
+
 ## 0.5.9 (2026-10-08)
 
 ### Changed

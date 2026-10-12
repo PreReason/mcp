@@ -34,7 +34,7 @@ Ask your AI where Treasury yields are. On its own, it reaches for a search resul
 
 ## What it covers
 
-PreReason gives an AI agent market context it can reason with, in place of raw numbers. One call returns a briefing with the analysis already in it: a signal line, trend direction over several windows, confidence scores, percentile ranks and correlations, and in the deeper briefings a regime label and a plain language narrative. The briefings cover macro, bonds, FX, commodities, Bitcoin, Ethereum and cross asset correlations. Company briefings cover listed companies in the USA, Japan, Korea and India, one company per call. The catalogue holds 32 live briefings and 270 individual metrics, among them Treasury yields, the latest FOMC statement, Treasury auctions, who holds US Treasuries, the Fed balance sheet, M2, net liquidity, the dollar, US crude and gas inventories, gold, silver, copper and wheat, oil, mining and agribusiness companies beside their commodity, AI compute and power demand, Bitcoin price and momentum, Bitcoin network and miner health, spot Bitcoin ETF flows and corporate Bitcoin treasuries. It is served over MCP (a remote server and an npm bridge) and over REST, as Markdown or JSON. The catalogue tools need no key, and an agent can get a free key from inside the session: it shows one link, a person approves it, and the key arrives.
+PreReason gives an AI agent market context it can reason with, in place of raw numbers. One call returns a briefing with the analysis already in it: a signal line, trend direction over several windows, confidence scores, percentile ranks and correlations, and in the deeper briefings a regime label and a plain language narrative. The briefings cover macro, bonds, FX, commodities, Bitcoin, Ethereum and cross asset correlations. Company briefings cover listed companies in the USA, Japan, Korea and India, one company per call. The catalogue holds 33 live briefings and 293 individual metrics, among them Treasury yields, the latest FOMC statement, the macro release calendar, Treasury auctions, who holds US Treasuries, the Fed balance sheet, M2, net liquidity, the dollar, US crude and gas inventories, gold, silver, copper and wheat, oil, mining and agribusiness companies beside their commodity, AI compute and power demand, Bitcoin price and momentum, Bitcoin network and miner health, spot Bitcoin ETF flows and corporate Bitcoin treasuries. It is served over MCP (a remote server and an npm bridge) and over REST, as Markdown or JSON. The catalogue tools need no key, and an agent can get a free key from inside the session: it shows one link, a person approves it, and the key arrives.
 
 <img src="https://raw.githubusercontent.com/PreReason/mcp/main/assets/how-it-connects.png" alt="How it connects: your agent (Claude, Cursor, Codex, VS Code) calls list_briefings, then get_context, through the npm bridge or the remote server at api.prereason.com/api/mcp; PreReason answers with the briefing, every figure dated and every source named. With no key yet, the first briefing call shows one approve link, and the key arrives in the bridge once a person clicks Approve." width="100%">
 
@@ -58,7 +58,7 @@ Add this to `claude_desktop_config.json` and restart Claude Desktop:
 }
 ```
 
-The catalogue tools work at once. The first time a briefing needs a key, the bridge asks for access: ask Claude for any briefing and the answer starts with `Approve at https://www.prereason.com/claim/PR-XXXX-XXXX`. Open the link, sign in or create a free account, click Approve. The key arrives in the bridge on its own, is saved to `~/.prereason/credentials.json`, and the next call works. Nothing is created in your account until you click Approve. If your account already holds as many API keys as it allows, the answer says so instead of looping: revoke a key under Settings on prereason.com and restart Claude, or set `PREREASON_API_KEY` to a key you already have.
+The catalogue tools work at once. To connect your account, tell Claude "connect me to PreReason", or ask for any briefing: either way Claude shows one link, `https://www.prereason.com/claim/PR-XXXX-XXXX`. Open it, sign in or create a free account, click Approve. The key arrives in the bridge on its own, is saved to `~/.prereason/credentials.json`, and is never shown; ask Claude whether PreReason is connected and it names your plan. Nothing is created in your account until you click Approve, and the link is asked for when you need it, so it never runs out while Claude sits open. If your account already holds as many API keys as it allows, the answer says so instead of looping: revoke a key under Settings on prereason.com, then ask to connect again, or set `PREREASON_API_KEY` to a key you already have.
 
 Config file location:
 - **macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`
@@ -98,24 +98,27 @@ Windsurf uses `serverUrl` instead of `url`; Gemini CLI uses `httpUrl`; Codex use
 
 Three ways, all free. The hosted server never hands out a key inside a session and never asks for one.
 
-**Through this bridge.** Run it with no key set: it asks PreReason for access on your behalf and shows one `approve_url`, in its log and in front of any answer that needs a key. Open it, sign in or create your account, click Approve, and the bridge saves the key, attached to your account and named `Agent: <client_name>`.
+**Through this bridge.** Run it with no key set: when you ask your assistant to connect PreReason, or an answer needs a key, it asks PreReason for access on your behalf and shows one `approve_url`, in its log and in the answer. Open it, sign in or create your account, click Approve, and the bridge saves the key, attached to your account and named `Agent: <client_name>`.
 
 **From code, for an agent with no browser.** `POST https://api.prereason.com/api/agent/claims` (no auth), show the human the `approve_url`, then poll `GET https://api.prereason.com/api/agent/claims/{claim_code}` with `Authorization: Bearer <claim_token>` until `status` is `approved`. Docs: [prereason.com/docs#agent-access](https://www.prereason.com/docs#agent-access).
 
 **On the website.** Sign up at [prereason.com/signup](https://www.prereason.com/signup), then Dashboard > Settings > API Keys. Keys start with `pr_live_`.
 
-## 6 MCP Tools
+## 7 MCP Tools
 
 | Tool | Auth | Description |
 |------|------|-------------|
-| `list_briefings` | Open | List all 32 pre-reasoned market briefings with tier requirements; with `search`, only those that match a question, and the covered companies it names, each with the `entity` to pass |
+| `list_briefings` | Open | List all 33 pre-reasoned market briefings with tier requirements; with `search`, only those that match a question, and the covered companies it names, each with the `entity` to pass |
 | `list_metrics` | Open | List every available metric across the bitcoin, macro, calculated and eth categories |
 | `get_health` | Open | API health check, version, account tier |
 | `get_context` | Required | Fetch a pre-reasoned market briefing (markdown or JSON); for a company briefing, `entity` names the company and `block` reads one of its 11 parts (see Company Briefings) |
 | `get_metric` | Required | Fetch a single metric with trend/signal/percentile |
 | `get_changes` | Required (Basic and above) | What changed since your last call: change events after a cursor, no values |
+| `get_news` | Required | Dated records of what companies filed and what federal agencies and the Federal Reserve published, newest first, each with its source, its date or time and a link; it states records, not reasons |
 
-## 32 Market Briefings
+The npm bridge and the Claude Desktop extension add one tool of their own, `connect_account`, which the bridge answers itself and the remote server does not offer: with no key yet it returns the one link to approve, and once approved it says the account is connected and on which plan. It never shows a key and never asks for one.
+
+## 33 Market Briefings
 
 ### Free (6 briefings)
 | Briefing | Description |
@@ -127,7 +130,7 @@ Three ways, all free. The hosted server never hands out a key inside a session a
 | `btc.pulse` | Price, 24h change, Bitcoin dominance |
 | `btc.grid-stress` | Epoch pace and difficulty adjustment forecast |
 
-### Basic - $19.99/mo (13 briefings)
+### Basic - $19.99/mo (14 briefings)
 | Briefing | Description |
 |----------|-------------|
 | `btc.momentum` | 200D MA support/resistance with 7d/30d/90d momentum and percentile rankings |
@@ -143,6 +146,7 @@ Three ways, all free. The hosted server never hands out a key inside a session a
 | `commodities.silver` | The silver fund (SLV) and silver's own monthly price from the World Bank, with the CFTC's COMEX silver positioning and the gold, dollar, copper and silver miners' funds and the 10 year real rate, each with its measured relationship to SLV |
 | `commodities.copper` | A copper futures fund (CPER) and copper's own monthly price from the World Bank, with the CFTC's COMEX copper positioning and the dollar and gold funds, each with its measured relationship to CPER |
 | `commodities.wheat` | A wheat futures fund (WEAT) and US soft red winter wheat's own monthly price from the World Bank, with the CFTC's CBOT wheat positioning, the dollar fund and the WTI spot price, each with its measured relationship to WEAT |
+| `macro.calendar` | The scheduled dates ahead of the main US releases, the FOMC and ECB decisions, the FOMC minutes and the Treasury coupon auctions ahead (the week's, or the next one), each from its publisher's own calendar, with the latest US jobs report, CPI and weekly jobless claims as published and what each release revised |
 
 ### Pro - $49.99/mo (13 briefings)
 | Briefing | Description |
@@ -163,7 +167,7 @@ Three ways, all free. The hosted server never hands out a key inside a session a
 
 ## Company Briefings
 
-`equities.company` reads one listed company per call, composed from its own reports (filings with its home market's regulator; for India, the results statement it publishes on its own website), each figure dated and sourced: USA companies on Basic and above, Japanese, Korean and Indian companies on Pro and above. It describes; it never says what to do.
+`equities.company` reads one listed company per call, composed from its own reports (filings with its home market's regulator; for India, its own published results), each figure dated and sourced: USA companies on Basic and above, Japanese, Korean and Indian companies on Pro and above. It describes; it never says what to do.
 
 <img src="https://raw.githubusercontent.com/PreReason/mcp/main/assets/company.png" alt="An agent asks what NVIDIA reported, how it ranks among its peers and what its guidance is; get_context with briefing equities.company and entity NVDA answers with quarterly revenue, operating margin, free cash flow and the company's own revenue guidance range, each with its date, its rank or its stored history, from NVIDIA's filings on SEC EDGAR" width="100%">
 
@@ -194,11 +198,11 @@ get_context(briefing="equities.company", entity="NVDA", block="valuation")
 
 Once connected, try prompts like:
 
-- "Give me the Bitcoin quick check"
+- "Connect me to PreReason"
 - "Show me the macro snapshot"
-- "What does the BTC context briefing say about market conditions?"
-- "Get the bitcoin price metric with trend analysis"
-- "What's the hash ribbon signal right now?"
+- "Where are Treasury yields, and what did the Fed last decide?"
+- "What did NVIDIA report, and how does it rank among its peers?"
+- "How is Bitcoin moving with stocks and the dollar?"
 - "List available briefings"
 
 ## Troubleshooting
