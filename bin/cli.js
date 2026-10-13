@@ -45,9 +45,10 @@ import {
 } from '../lib/connect.js';
 import { failureResponse } from '../lib/jsonrpc.js';
 
-// Keep in sync with package.json on each release
+// Keep in sync with package.json and server.json on each release
+// (src/config/__tests__/directory-copy.test.ts holds all of them to one number)
 const PKG_NAME = '@prereason/mcp';
-const PKG_VERSION = '0.6.0';
+const PKG_VERSION = '0.9.0';
 const DEFAULT_URL = 'https://api.prereason.com/api/mcp';
 const USER_AGENT = `prereason-mcp/${PKG_VERSION} node/${process.versions.node} (${platform()})`;
 

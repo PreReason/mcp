@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.9.0 (2026-10-13)
+
+### Changed
+- One version number for the npm package and its MCP Registry record. Until now the record counted on its own (0.7.0 to 0.7.2 in March, 0.8.0 since 2026-09-21; the 0.8.1 and 0.8.2 that `server.json` also named were never published) while the npm package counted separately (0.6.0), so one release went by two numbers. From this release both are the same: 0.9.0 sorts above the registry's published 0.8.0, as a new record must to be shown as the latest, and above the two numbers never published. The bridge's code is unchanged from 0.6.0.
+- `server.json` registry version 0.9.0, npm package 0.9.0.
+
 ## 0.6.0 (2026-10-12)
 
 ### Added
