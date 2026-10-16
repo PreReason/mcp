@@ -171,7 +171,7 @@ The npm bridge and the Claude Desktop extension add one tool of their own, `conn
 
 <img src="https://raw.githubusercontent.com/PreReason/mcp/main/assets/company.png" alt="An agent asks what NVIDIA reported, how it ranks among its peers and what its guidance is; get_context with briefing equities.company and entity NVDA answers with quarterly revenue, operating margin, free cash flow and the company's own revenue guidance range, each with its date, its rank or its stored history, from NVIDIA's filings on SEC EDGAR" width="100%">
 
-- **Name the company** with `entity`: a USA ticker or CIK (`NVDA`), a Japanese securities code (`7203`), a Korean stock code (`005930`) or an Indian company's ISIN (`INE018A01030`).
+- **Name the company** with `entity`: a USA ticker or CIK (`NVDA`), a Japanese securities code (`7203`), a Korean stock code (`005930`), an Indian company's ISIN (`INE018A01030`) or the LEI of a company filing in the UK or of a European company (`2138002P5RNKC5W2JZ46`).
 - **Not sure of the code?** Call `list_briefings` with `search`, for example `"Toyota earnings"`: the answer lists the matching covered companies, each with the `entity` to pass.
 - **Read one part** with `block`, one of the 11 below, or leave it out for the whole briefing. A part counts one call; the whole briefing counts one for each part it carries. Parts are served for today only.
 
