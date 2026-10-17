@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/PreReason/mcp/main/assets/header.png" alt="PreReason, market context reasoned in advance: the PR mark lit over the names of the Treasury yields, currencies, commodities, macro series and companies it serves" width="100%">
+<img src="https://raw.githubusercontent.com/PreReason/mcp/main/assets/header.png" alt="PreReason, market context reasoned in advance, with npx -y @prereason/mcp, and one served reading as an agent receives it: the 10 year Treasury yield with its 7, 30 and 90 day changes, its reading, its source and when it was generated" width="100%">
 
 # @prereason/mcp
 
@@ -21,7 +21,7 @@ Financial market context for AI agents: macro, rates, bonds, FX, commodities, co
 
 Ask your AI where Treasury yields are. On its own, it reaches for a search result or a raw series and works out the rest by itself. When it prereasons, one `get_context` call brings back the context already worked out: the 30 year yield at 5.67% on 2026-10-07, the highest reading on the US Treasury's daily par yield curve since July 2001.
 
-<img src="https://raw.githubusercontent.com/PreReason/mcp/main/assets/briefing.png" alt="An agent asks where Treasury yields are and what the Fed last decided; get_context with briefing macro.rates answers with the 30 year and 10 year Treasury yields, 10 year breakeven inflation and the Fed funds target range, each with its date and its context, from a served answer of 2026-10-08" width="100%">
+<img src="https://raw.githubusercontent.com/PreReason/mcp/main/assets/briefing.png" alt="An agent asks where Treasury yields are and what the Fed last decided; get_context with briefing macro.rates answers with the 30 year and 10 year Treasury yields and 10 year breakeven inflation, PreReason's calculation, each with its 7, 30 and 90 day changes, its percentile and its date, and the Fed funds target range with its vote, from a served answer of 2026-10-16" width="100%">
 
 ## Why prereason?
 
@@ -30,7 +30,7 @@ Ask your AI where Treasury yields are. On its own, it reaches for a search resul
 - **One call, a whole briefing.** A briefing gathers the series a question needs, so the turns go to the answer rather than to lookups.
 - **The markets in one place.** Rates and Treasuries, the Fed, FX, commodities, macro, listed companies in the USA, Japan, Korea and India, and Bitcoin.
 - **It describes; it never advises.** Briefings say what the data shows. They never say what to buy, sell or hold.
-- **Quick to set up.** One block of config for Claude, Cursor, Codex or VS Code, through the npm bridge or the remote server. The catalogue tools need no key; for the rest, the bridge gives you one link to approve in your browser and the key arrives in the running session, and the remote server asks you to sign in.
+- **Quick to set up.** One block of config for Claude, Cursor, Codex or VS Code, through the npm bridge or the remote server. The catalogue tools need no key; for the rest, the bridge gives you one link to approve in your browser and the key arrives in the running session; the remote server takes your API key as a header.
 
 ## What it covers
 
