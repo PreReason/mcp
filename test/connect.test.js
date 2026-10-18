@@ -8,6 +8,7 @@ import {
   CONNECT_TOOL,
   CONNECT_TOOL_NAME,
   Connection,
+  FIRST_READ_ASK,
   isAuthRequired,
   isKeyRefusal,
   planName,
@@ -193,6 +194,50 @@ test('after the approval, connect_account confirms the account and names its pla
   assert.doesNotMatch(answer.text, KEY_SHAPE);
   assert.equal(verified, 1);
   assert.equal(fetchImpl.creates(), 1, 'no second claim once connected');
+});
+
+test('the first answer after an approval asks for one small read of macro.snapshot, so the approval page shows it done; only once', async () => {
+  const sleep = heldSleep();
+  const fetchImpl = claimsServer({
+    polls: [
+      { status: 200, body: { status: 'pending' } },
+      { status: 200, body: { status: 'approved', api_key: KEY, key: { id: 'k1', name: 'Agent: x' }, account: { tier: 'free' } } },
+    ],
+  });
+  const { conn } = connection({ fetchImpl, sleep, verify: async () => ({ authenticated: true, tier: 'free' }) });
+  await conn.connect();
+  await tick();
+  sleep.release();
+  for (let i = 0; i < 20 && conn.status !== 'approved'; i++) await tick();
+  assert.equal(conn.status, 'approved');
+
+  const first = await conn.connect();
+  assert.match(first.text, /^Connected: .* on the Free plan\./);
+  assert.ok(first.text.endsWith(` ${FIRST_READ_ASK}`), 'the ask closes the answer, the last thing the assistant reads');
+  assert.match(FIRST_READ_ASK, /call get_context with briefing macro\.snapshot/);
+  assert.match(FIRST_READ_ASK, /list_briefings does not count/);
+  assert.doesNotMatch(first.text, KEY_SHAPE);
+  assert.doesNotMatch(first.text, EM_DASH);
+
+  const again = await conn.connect();
+  assert.match(again.text, /^Connected: /);
+  assert.doesNotMatch(again.text, /To finish connecting/, 'asked once, not on every confirmation');
+});
+
+test('a key the app was started with is confirmed without the first read ask: no approval happened here', async () => {
+  for (const source of ['env', 'header', 'file']) {
+    const { conn } = connection({
+      fetchImpl: claimsServer(),
+      headers: { 'User-Agent': 'x', Authorization: `Bearer ${KEY}` },
+      source,
+      env: source === 'env' ? { PREREASON_API_KEY: KEY } : {},
+      verify: async () => ({ authenticated: true, tier: 'pro' }),
+    });
+    const answer = await conn.connect();
+    assert.equal(answer.isError, false, source);
+    assert.match(answer.text, /^Connected: .* on the Pro plan\./, source);
+    assert.doesNotMatch(answer.text, /To finish connecting/, source);
+  }
 });
 
 test('connect_account looks at a pending claim at once, so an approval just made is seen without waiting for the poll', async () => {

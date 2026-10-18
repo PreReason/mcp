@@ -8,7 +8,7 @@
     "source": "github"
   },
   "websiteUrl": "https://www.prereason.com",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "icons": [
     { "src": "https://www.prereason.com/logos/logo-128.png", "mimeType": "image/png", "sizes": ["128x128"] },
     { "src": "https://www.prereason.com/logos/logo-256.png", "mimeType": "image/png", "sizes": ["256x256"] },
@@ -18,7 +18,7 @@
     {
       "registryType": "npm",
       "identifier": "@prereason/mcp",
-      "version": "0.9.0",
+      "version": "0.9.1",
       "transport": {
         "type": "stdio"
       },

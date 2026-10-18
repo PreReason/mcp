@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.9.1 (2026-10-18)
+
+### Changed
+- Right after a person approves access, `connect_account`'s "Connected" answer asks the assistant to make one small read now: `get_context` with the briefing `macro.snapshot` (on every plan), told to the person in one sentence. The approval page shows the connection done only once PreReason sees the new key read data, and a catalogue call such as `list_briefings` does not count, so until now an assistant that answered "Connected" and listed the briefings left the page saying "waiting" until the person's first real question. The ask comes once, on the first confirmation after an approval in that session; a key the app was started with (the environment, a `--header` or the saved credentials file) is confirmed as before.
+- `server.json` registry version 0.9.1, npm package 0.9.1.
+- `test/connect.test.js` gains two cases (19).
+
 ## 0.9.0 (2026-10-13)
 
 ### Changed
