@@ -3,7 +3,7 @@
   "version": "0.9.1",
   "mcpName": "com.prereason/mcp",
   "type": "module",
-  "description": "Financial market context for AI agents: macro, rates, bonds, FX, commodities, companies and Bitcoin.",
+  "description": "Financial market context for AI agents, with listed companies' results: www.prereason.com/agents.md",
   "bin": {
     "prereason-mcp": "./bin/cli.js"
   },

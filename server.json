@@ -2,7 +2,7 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "com.prereason/mcp",
   "title": "PreReason",
-  "description": "Financial market context for AI agents: macro, rates, bonds, FX, commodities, companies and Bitcoin.",
+  "description": "Financial market context for AI agents, with listed companies' results: www.prereason.com/agents.md",
   "repository": {
     "url": "https://github.com/PreReason/mcp",
     "source": "github"
