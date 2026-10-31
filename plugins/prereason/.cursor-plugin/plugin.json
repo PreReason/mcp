@@ -1,0 +1,29 @@
+{
+  "name": "prereason",
+  "displayName": "PreReason",
+  "version": "0.9.1",
+  "description": "A financial data MCP server and REST API for AI agents: briefings reasoned in advance, from the economy to listed companies' results. Start at www.prereason.com/agents.md",
+  "author": {
+    "name": "PreReason",
+    "email": "support@prereason.com"
+  },
+  "license": "MIT",
+  "keywords": [
+    "financial data",
+    "market data",
+    "MCP server",
+    "AI agents",
+    "economic data",
+    "company financials",
+    "earnings",
+    "company filings",
+    "interest rates",
+    "Treasury yields",
+    "bonds",
+    "forex",
+    "commodities",
+    "energy",
+    "Bitcoin"
+  ],
+  "logo": "assets/logo.svg"
+}

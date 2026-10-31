@@ -1,0 +1,10 @@
+{
+  "name": "prereason",
+  "version": "0.9.1",
+  "description": "Financial market context for AI agents, with listed companies' results: www.prereason.com/agents.md",
+  "mcpServers": {
+    "prereason": {
+      "httpUrl": "https://api.prereason.com/api/mcp"
+    }
+  }
+}

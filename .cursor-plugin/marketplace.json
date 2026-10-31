@@ -1,0 +1,18 @@
+{
+  "name": "prereason",
+  "owner": {
+    "name": "PreReason",
+    "email": "support@prereason.com"
+  },
+  "metadata": {
+    "description": "A financial data MCP server and REST API for AI agents: briefings reasoned in advance, from the economy to listed companies' results. Start at www.prereason.com/agents.md",
+    "version": "0.9.1"
+  },
+  "plugins": [
+    {
+      "name": "prereason",
+      "source": "./plugins/prereason",
+      "description": "A financial data MCP server and REST API for AI agents: briefings reasoned in advance, from the economy to listed companies' results. Start at www.prereason.com/agents.md"
+    }
+  ]
+}
